@@ -6,19 +6,17 @@ import com.pengrad.telegrambot.model.User;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.dataBase.UserAndLinksDataBase;
 import edu.java.bot.dataBase.UsersDataBase;
-import edu.java.bot.utils.LinkUtils;
-import java.util.regex.Matcher;
+import java.util.List;
 import java.util.regex.Pattern;
 
-public class TrackHandler implements UpdateHandler {
+public class ListHandler implements UpdateHandler {
     private UpdateHandler next;
     private Update update;
     private TelegramBot bot;
-    private Pattern commandPattern = Pattern.compile("^/track (.*)$");
+    private Pattern commandPattern = Pattern.compile("^/list$");
     private final String UNAUTHORIZED_USER_MESSAGE = "Используйте /start, чтобы авторизоваться";
-    private final String NOT_PERMITTED_LINK = "Неверная ссылка";
 
-    public TrackHandler(TelegramBot bot, UpdateHandler next, Update update) {
+    public ListHandler(TelegramBot bot, UpdateHandler next, Update update) {
         this.next = next;
         this.bot = bot;
         this.update = update;
@@ -26,17 +24,12 @@ public class TrackHandler implements UpdateHandler {
 
     @Override
     public void handle() {
-        Matcher matcher = commandPattern.matcher(update.message().text());
-        if (matcher.matches()) {
+        if (commandPattern.matcher(update.message().text()).matches()) {
             User user = UsersDataBase.getUserById(update.message().from().id());
             Long chatId = update.message().chat().id();
             if (user != null) {
-                String URL = matcher.group();
-                if (LinkUtils.checkLink(URL)) {
-                    UserAndLinksDataBase.addLinkToUser(user.id(), URL);
-                } else {
-                    bot.execute(new SendMessage(chatId, NOT_PERMITTED_LINK));
-                }
+                List<String> allLinksOfUser = UserAndLinksDataBase.getAllLinksById(user.id());
+                bot.execute(new SendMessage(chatId, concatenateStrings(allLinksOfUser)));
             } else {
                 bot.execute(new SendMessage(chatId, UNAUTHORIZED_USER_MESSAGE));
             }
@@ -47,4 +40,11 @@ public class TrackHandler implements UpdateHandler {
         }
     }
 
+    private String concatenateStrings(List<String> list) {
+        StringBuilder toReturn = new StringBuilder();
+        for (String string : list) {
+            toReturn.append(string + "\n");
+        }
+        return toReturn.toString();
+    }
 }
