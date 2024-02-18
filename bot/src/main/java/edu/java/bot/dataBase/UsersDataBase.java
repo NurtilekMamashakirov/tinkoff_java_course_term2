@@ -1,7 +1,6 @@
 package edu.java.bot.dataBase;
 
 import com.pengrad.telegrambot.model.User;
-
 import java.util.HashMap;
 
 public class UsersDataBase { // imitation of data base
