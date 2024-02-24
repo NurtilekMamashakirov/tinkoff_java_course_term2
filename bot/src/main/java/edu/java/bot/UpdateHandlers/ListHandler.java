@@ -6,24 +6,24 @@ import com.pengrad.telegrambot.model.User;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.dataBase.UserAndLinksDataBase;
 import edu.java.bot.dataBase.UsersDataBase;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.regex.Pattern;
 
+@Component
 public class ListHandler implements UpdateHandler {
-    private UpdateHandler next;
-    private Update update;
     private TelegramBot bot;
     private Pattern commandPattern = Pattern.compile("^/list$");
     private final String UNAUTHORIZED_USER_MESSAGE = "Используйте /start, чтобы авторизоваться";
 
-    public ListHandler(TelegramBot bot, UpdateHandler next, Update update) {
-        this.next = next;
+    @Autowired
+    public ListHandler(TelegramBot bot) {
         this.bot = bot;
-        this.update = update;
     }
 
     @Override
-    public void handle() {
+    public void handle(Update update) {
         if (commandPattern.matcher(update.message().text()).matches()) {
             User user = UsersDataBase.getUserById(update.message().from().id());
             Long chatId = update.message().chat().id();
@@ -33,11 +33,15 @@ public class ListHandler implements UpdateHandler {
             } else {
                 bot.execute(new SendMessage(chatId, UNAUTHORIZED_USER_MESSAGE));
             }
-        } else if (next != null) {
-            next.handle();
-        } else {
-            bot.execute(new SendMessage(update.message().chat().id(), UNKNOWN_COMMAND));
         }
+    }
+
+    @Override
+    public boolean supports(Update update) {
+        if (commandPattern.matcher(update.message().text()).matches()) {
+            return true;
+        }
+        return false;
     }
 
     private String concatenateStrings(List<String> list) {

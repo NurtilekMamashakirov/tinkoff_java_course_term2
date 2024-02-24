@@ -7,44 +7,48 @@ import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.dataBase.UserAndLinksDataBase;
 import edu.java.bot.dataBase.UsersDataBase;
 import edu.java.bot.utils.LinkUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Component
 public class TrackHandler implements UpdateHandler {
-    private UpdateHandler next;
-    private Update update;
     private TelegramBot bot;
     private Pattern commandPattern = Pattern.compile("^/track (.*)$");
     private final String UNAUTHORIZED_USER_MESSAGE = "Используйте /start, чтобы авторизоваться";
     private final String NOT_PERMITTED_LINK = "Неверная ссылка";
 
-    public TrackHandler(TelegramBot bot, UpdateHandler next, Update update) {
-        this.next = next;
+    @Autowired
+    public TrackHandler(TelegramBot bot) {
         this.bot = bot;
-        this.update = update;
     }
 
     @Override
-    public void handle() {
+    public void handle(Update update) {
+        Matcher matcher = commandPattern.matcher(update.message().text());
+        matcher.matches();
+        User user = UsersDataBase.getUserById(update.message().from().id());
+        Long chatId = update.message().chat().id();
+        if (user != null) {
+            String URL = matcher.group();
+            if (LinkUtils.checkLink(URL)) {
+                UserAndLinksDataBase.addLinkToUser(user.id(), URL);
+            } else {
+                bot.execute(new SendMessage(chatId, NOT_PERMITTED_LINK));
+            }
+        } else {
+            bot.execute(new SendMessage(chatId, UNAUTHORIZED_USER_MESSAGE));
+        }
+    }
+
+    @Override
+    public boolean supports(Update update) {
         Matcher matcher = commandPattern.matcher(update.message().text());
         if (matcher.matches()) {
-            User user = UsersDataBase.getUserById(update.message().from().id());
-            Long chatId = update.message().chat().id();
-            if (user != null) {
-                String URL = matcher.group();
-                if (LinkUtils.checkLink(URL)) {
-                    UserAndLinksDataBase.addLinkToUser(user.id(), URL);
-                } else {
-                    bot.execute(new SendMessage(chatId, NOT_PERMITTED_LINK));
-                }
-            } else {
-                bot.execute(new SendMessage(chatId, UNAUTHORIZED_USER_MESSAGE));
-            }
-        } else if (next != null) {
-            next.handle();
-        } else {
-            bot.execute(new SendMessage(update.message().chat().id(), UNKNOWN_COMMAND));
+            return true;
         }
+        return false;
     }
 
 }
