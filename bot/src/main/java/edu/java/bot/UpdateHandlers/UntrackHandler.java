@@ -5,16 +5,15 @@ import com.pengrad.telegrambot.model.User;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.dataBase.UserAndLinksDataBase;
 import edu.java.bot.dataBase.UsersDataBase;
-import org.springframework.stereotype.Component;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class UntrackHandler implements CommandHandler {
     private final static String COMMAND = "/untrack";
     private final static Pattern COMMAND_PATTERN = Pattern.compile("/untrack (.*)");
-    private final String UNAUTHORIZED_USER_MESSAGE = "Используйте /start, чтобы авторизоваться";
-    private final String SUCCESSFUL_DELETE_MESSAGE = "Ссылка больше не отслеживается";
-    private final String ERROR_DELETE_MESSAGE =
+    private final static String UNAUTHORIZED_USER_MESSAGE = "Используйте /start, чтобы авторизоваться";
+    private final static String SUCCESSFUL_DELETE_MESSAGE = "Ссылка больше не отслеживается";
+    private final static String ERROR_DELETE_MESSAGE =
         "Такой ссылки не найдено. \nИспользуйте /list, чтобы посмотреть список отслеживаемых ссылок";
 
     @Override

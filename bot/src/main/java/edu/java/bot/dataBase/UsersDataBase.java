@@ -5,18 +5,21 @@ import java.util.HashMap;
 
 public class UsersDataBase { // imitation of data base
 
-    private final static HashMap<Long, User> users = new HashMap<>();
+    private UsersDataBase() {
+    }
+
+    private final static HashMap<Long, User> USERS = new HashMap<>();
 
     public static void addUser(User user) {
-        users.put(user.id(), user);
+        USERS.put(user.id(), user);
     }
 
     public static void removeUser(User user) {
-        users.remove(user.id());
+        USERS.remove(user.id());
     }
 
     public static User getUserById(Long id) {
-        return users.get(id);
+        return USERS.get(id);
     }
 
 }

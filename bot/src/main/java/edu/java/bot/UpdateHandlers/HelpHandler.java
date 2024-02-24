@@ -2,14 +2,13 @@ package edu.java.bot.UpdateHandlers;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import org.springframework.stereotype.Component;
 
 public class HelpHandler implements CommandHandler {
     private final static String COMMAND = "/help";
-    private final String COMMANDS_LIST =
-        "/start -- зарегистрировать пользователя\n/help -- вывести окно с командами\n" +
-            "/track -- начать отслеживание ссылки\n" + "/untrack -- прекратить отслеживание ссылки\n" +
-            "/list -- показать список отслеживаемых ссылок";
+    private final static String COMMANDS_LIST =
+        "/start -- зарегистрировать пользователя\n/help -- вывести окно с командами\n"
+            + "/track -- начать отслеживание ссылки\n" + "/untrack -- прекратить отслеживание ссылки\n"
+            + "/list -- показать список отслеживаемых ссылок";
 
     @Override
     public SendMessage handle(Update update) {
