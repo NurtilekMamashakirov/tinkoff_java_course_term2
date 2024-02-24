@@ -5,7 +5,6 @@ import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.UpdateHandlers.CommandHandler;
-import edu.java.bot.UpdateHandlers.HelpHandler;
 import edu.java.bot.UpdateHandlers.ListHandler;
 import org.junit.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -24,8 +23,8 @@ public class ListHandlerTest {
         Message message = Mockito.mock(Message.class);
         Mockito.when(message.chat()).thenReturn(chat);
         Mockito.when(update.message()).thenReturn(message);
-        HelpHandler helpHandler = new HelpHandler();
-        SendMessage result = helpHandler.handle(update);
+        CommandHandler listHandler = new ListHandler();
+        SendMessage result = listHandler.handle(update);
         assertThat(result).isNotNull();
     }
 
