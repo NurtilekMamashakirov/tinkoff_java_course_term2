@@ -6,7 +6,7 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.UpdateHandlers.CommandHandler;
 import edu.java.bot.UpdateHandlers.HelpHandler;
-import edu.java.bot.UpdateHandlers.ListHandler;
+import edu.java.bot.UpdateHandlers.StartHandler;
 import org.junit.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -14,7 +14,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class StartHandler {
+public class StartHandlerTest {
     @Test
     public void handleTest() {
         Update update = Mockito.mock(Update.class);
@@ -30,20 +30,20 @@ public class StartHandler {
 
     static Arguments[] exampleAndExpected() {
         return new Arguments[] {
-            Arguments.of("/list", true),
-            Arguments.of("/lists", false),
-            Arguments.of("list", false)
+            Arguments.of("/start", true),
+            Arguments.of("/starts", false),
+            Arguments.of("start", false)
         };
     }
 
     @ParameterizedTest
     @MethodSource("exampleAndExpected")
     public void supportsTest(String command, Boolean expected) {
-        CommandHandler listHandler = new ListHandler();
+        CommandHandler startHandler = new StartHandler();
         Message message = Mockito.mock(Message.class);
         Mockito.when(message.text()).thenReturn(command);
         Update update = Mockito.mock(Update.class);
         Mockito.when(update.message()).thenReturn(message);
-        assertThat(listHandler.supports(update)).isEqualTo(expected);
+        assertThat(startHandler.supports(update)).isEqualTo(expected);
     }
 }

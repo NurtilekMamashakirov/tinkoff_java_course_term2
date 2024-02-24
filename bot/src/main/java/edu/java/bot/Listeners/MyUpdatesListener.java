@@ -3,19 +3,20 @@ package edu.java.bot.Listeners;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
-import edu.java.bot.UpdateHandlers.UpdateHandler;
+import com.pengrad.telegrambot.request.SendMessage;
+import edu.java.bot.UpdateHandlers.CommandHandler;
+import java.util.List;
+import edu.java.bot.UpdateHandlers.UntrackHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-import java.util.List;
 
 @Component
 public class MyUpdatesListener implements UpdatesListener {
-    TelegramBot bot;
-    List<UpdateHandler> handlers;
+    private TelegramBot bot;
+    private List<CommandHandler> handlers;
 
     @Autowired
-    public MyUpdatesListener(TelegramBot bot, List<UpdateHandler> handlers) {
+    public MyUpdatesListener(TelegramBot bot, List<CommandHandler> handlers) {
         this.bot = bot;
         this.handlers = handlers;
     }
@@ -23,18 +24,11 @@ public class MyUpdatesListener implements UpdatesListener {
     @Override
     public int process(List<Update> updates) {
         updates.forEach(update -> {
-            long check = handlers.stream()
-                .filter(handler -> handler.supports(update))
-                .count();
-            if (check == 1) {
+            SendMessage answer =
                 handlers.stream()
                     .filter(handler -> handler.supports(update))
-                    .findAny()
-                    .get()
-                    .handle(update);
-            } else {
-
-            }
+                    .findFirst().get().handle(update);
+            bot.execute(answer);
         });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }

@@ -1,12 +1,11 @@
 package edu.java.bot.UpdateHandlers;
 
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.request.SendMessage;
 
-public interface UpdateHandler {
+public interface CommandHandler {
 
-    String UNKNOWN_COMMAND = "Команда неизвестна.";
-
-    void handle(Update update);
+    SendMessage handle(Update update);
 
     boolean supports(Update update);
 }
