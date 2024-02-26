@@ -5,7 +5,7 @@ import edu.java.clients.ResponseDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.reactive.function.client.WebClient;
 
-public class StackOverflowClient<T> implements Client {
+public class StackOverflowClient implements Client {
 
     @Value(value = "${api.stackOverflow.baseUrl}")
     private String baseUrl;
