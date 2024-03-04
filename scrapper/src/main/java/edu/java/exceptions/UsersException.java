@@ -3,10 +3,11 @@ package edu.java.exceptions;
 import lombok.Getter;
 
 @Getter
-public class BadRequestException extends RuntimeException {
+public class UsersException extends RuntimeException {
+
     private String description;
 
-    public BadRequestException(String message, String description) {
+    public UsersException(String message, String description) {
         super(message);
         this.description = description;
     }
