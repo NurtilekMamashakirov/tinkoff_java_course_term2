@@ -5,7 +5,7 @@ import java.util.Set;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class InMemoryUsersDao implements UsersDao{
+public class InMemoryUsersDao implements UsersDao {
 
     private final Set<Long> ids;
 
