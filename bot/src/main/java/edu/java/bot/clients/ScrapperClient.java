@@ -18,6 +18,7 @@ public class ScrapperClient {
     private String linksUri = "/links";
     @Value("${scrapper.chatUri}")
     private String chatUri = "/tg-chat";
+    private static final String HEADER_NAME = "Tg-Chat-Id";
 
     public ScrapperClient() {
         webClient = WebClient
@@ -39,7 +40,7 @@ public class ScrapperClient {
             .post()
             .uri(linksUri)
             .bodyValue(addLinkRequest)
-            .header("Tg-Chat-Id", id.toString())
+            .header(HEADER_NAME, id.toString())
             .retrieve()
             .bodyToMono(LinkResponse.class)
             .block();
@@ -51,7 +52,7 @@ public class ScrapperClient {
             .method(HttpMethod.DELETE)
             .uri(linksUri)
             .bodyValue(request)
-            .header("Tg-Chat-Id", id.toString())
+            .header(HEADER_NAME, id.toString())
             .retrieve()
             .bodyToMono(LinkResponse.class)
             .block();
@@ -61,7 +62,7 @@ public class ScrapperClient {
         return webClient
             .get()
             .uri(linksUri)
-            .header("Tg-Chat-Id", id.toString())
+            .header(HEADER_NAME, id.toString())
             .retrieve()
             .bodyToMono(ListLinksResponse.class)
             .block();

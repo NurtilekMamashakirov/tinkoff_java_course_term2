@@ -1,7 +1,6 @@
 package edu.java.bot.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 public record ListLinksResponse(

@@ -1,8 +1,8 @@
 package edu.java.bot.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 import java.net.URI;
+import java.util.List;
 
 public record LinkUpdate(
     @JsonProperty("id")
