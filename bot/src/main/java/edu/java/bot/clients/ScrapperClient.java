@@ -1,0 +1,87 @@
+package edu.java.bot.clients;
+
+import edu.java.bot.dto.request.AddLinkRequest;
+import edu.java.bot.dto.request.RemoveLinkRequest;
+import edu.java.bot.dto.response.LinkResponse;
+import edu.java.bot.dto.response.ListLinksResponse;
+import java.net.URISyntaxException;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpMethod;
+import org.springframework.web.reactive.function.client.WebClient;
+
+public class ScrapperClient {
+
+    @Value("${scrapper.baseUrl}")
+    private String baseUrl = "http://localhost:8080";
+    private WebClient webClient;
+    @Value("${scrapper.linksUri}")
+    private String linksUri = "/links";
+    @Value("${scrapper.chatUri}")
+    private String chatUri = "/tg-chat";
+
+    public ScrapperClient() {
+        webClient = WebClient
+            .builder()
+            .baseUrl(baseUrl)
+            .build();
+    }
+
+    public ScrapperClient(String baseUrl) {
+        webClient = WebClient
+            .builder()
+            .baseUrl(baseUrl)
+            .build();
+    }
+
+    public LinkResponse addLink(Long id, String link) throws URISyntaxException {
+        AddLinkRequest addLinkRequest = new AddLinkRequest(link);
+        return webClient
+            .post()
+            .uri(linksUri)
+            .bodyValue(addLinkRequest)
+            .header("Tg-Chat-Id", id.toString())
+            .retrieve()
+            .bodyToMono(LinkResponse.class)
+            .block();
+    }
+
+    public LinkResponse removeLink(Long id, String link) {
+        RemoveLinkRequest request = new RemoveLinkRequest(link);
+        return webClient
+            .method(HttpMethod.DELETE)
+            .uri(linksUri)
+            .bodyValue(request)
+            .header("Tg-Chat-Id", id.toString())
+            .retrieve()
+            .bodyToMono(LinkResponse.class)
+            .block();
+    }
+
+    public ListLinksResponse getLinks(Long id) {
+        return webClient
+            .get()
+            .uri(linksUri)
+            .header("Tg-Chat-Id", id.toString())
+            .retrieve()
+            .bodyToMono(ListLinksResponse.class)
+            .block();
+    }
+
+    public void addChat(Long id) {
+        String uri = chatUri + "/" + id.toString();
+        webClient.post()
+            .uri(uri)
+            .retrieve()
+            .bodyToMono(Void.class)
+            .block();
+    }
+
+    public void deleteChat(Long id) {
+        String uri = chatUri + "/" + id.toString();
+        webClient.delete()
+            .uri(uri)
+            .retrieve()
+            .bodyToMono(Void.class)
+            .block();
+    }
+}
