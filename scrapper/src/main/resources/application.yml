@@ -14,10 +14,16 @@ server:
 logging:
   config: classpath:log4j2-plain.xml
 
+springdoc:
+  swagger-ui:
+    path: /swagger-ui
+
 api:
   stackOverflow:
     baseUrl: https://api.stackexchange.com/2.3/
   github:
     basuUrl: https://api.github.com/
 
-
+bot:
+  baseUrl: http://localhost:8090
+  updatesUri: /updates
