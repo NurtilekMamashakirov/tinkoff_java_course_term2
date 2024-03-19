@@ -2,11 +2,15 @@ package edu.java.repository.jdbc;
 
 import edu.java.dto.models.Link;
 import edu.java.repository.LinksDao;
+import java.net.URI;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
@@ -36,6 +40,9 @@ public class JdbcLinksDao implements LinksDao {
         "SELECT COUNT(*) from chat_and_link where chat_id = ? and link_id = ? and status = 1";
     private final static String ADD_LINK_TO_CHAT_COMMAND =
         "INSERT INTO chat_and_link (chat_id, link_id, status) VALUES (?,?,1)";
+    private final static String GET_ALL_ACTIVE_LINKS_COMMAND = "SELECT from link where status = 1";
+    private final static String UPDATE_CHECKED_TIME_COMMAND = "UPDATE link SET checked_at = ? where link = ?";
+    private final static String UPDATE_UPDATED_TIME_COMMAND = "UPDATE link SET updated_at = ? where link = ?";
 
     @Override
     public List<Link> getLinks(Long id) {
@@ -43,11 +50,11 @@ public class JdbcLinksDao implements LinksDao {
         List<Link> links = new ArrayList<>();
         for (Long linkId : linkIds) {
             String linkString = jdbcTemplate.queryForObject(GET_LINK_STRING_BY_ID_COMMAND, String.class, linkId);
-            OffsetDateTime updated_at =
+            OffsetDateTime updatedAt =
                 jdbcTemplate.queryForObject(GET_LINK_UPDATED_AT_BY_ID_COMMAND, OffsetDateTime.class, linkId);
-            OffsetDateTime checked_at =
+            OffsetDateTime checkedAt =
                 jdbcTemplate.queryForObject(GET_LINK_CHECKED_AT_BY_ID_COMMAND, OffsetDateTime.class, linkId);
-            links.add(new Link(linkId, linkString, updated_at, checked_at, List.of()));
+            links.add(new Link(linkId, URI.create(linkString), updatedAt, checkedAt, List.of()));
         }
         return links;
     }
@@ -75,21 +82,54 @@ public class JdbcLinksDao implements LinksDao {
         return true;
     }
 
+    @Override
+    public List<Link> getLastNLinks(Integer numOfLinksToReturn) {
+        RowMapper<Link> rowMapper = (resultSet, rowNum) -> {
+            Link link = new Link();
+            link.setId(resultSet.getLong("id"));
+            link.setLink(URI.create(resultSet.getString("link")));
+            link.setUpdatedAt(resultSet.getTimestamp("updated_at").toLocalDateTime()
+                .atOffset(ZoneOffset.of(ZoneOffset.systemDefault()
+                    .getId())));
+            link.setCheckedAt(resultSet.getTimestamp("checked_at").toLocalDateTime()
+                .atOffset(ZoneOffset.of(ZoneOffset.systemDefault()
+                    .getId())));
+            link.setChats(List.of());
+            return link;
+        };
+        List<Link> allLinks = jdbcTemplate.query(GET_ALL_ACTIVE_LINKS_COMMAND, rowMapper);
+        return allLinks
+            .stream()
+            .sorted(Comparator.comparing(Link::getCheckedAt))
+            .limit(numOfLinksToReturn)
+            .toList();
+    }
+
+    @Override
+    public void updateCheckedTime(String link) {
+        jdbcTemplate.update(UPDATE_CHECKED_TIME_COMMAND, OffsetDateTime.now().toString(), link);
+    }
+
+    @Override
+    public void updateUpdatedTime(String link, OffsetDateTime updatedAt) {
+        jdbcTemplate.update(UPDATE_UPDATED_TIME_COMMAND, updatedAt.toString(), link);
+    }
+
     private Link getLinkByString(String linkString) {
         Long id = jdbcTemplate.queryForObject(GET_LINK_ID_BY_STRING_COMMAND, Long.class, linkString);
-        OffsetDateTime updated_at =
+        OffsetDateTime updatedAt =
             jdbcTemplate.queryForObject(
                 GET_LINK_UPDATED_AT_BY_STRING_COMMAND,
                 OffsetDateTime.class,
                 linkString
             );
-        OffsetDateTime checked_at =
+        OffsetDateTime checkedAt =
             jdbcTemplate.queryForObject(
                 GET_LINK_CHECKED_AT_BY_STRING_COMMAND,
                 OffsetDateTime.class,
                 linkString
             );
-        return new Link(id, linkString, updated_at, checked_at, List.of());
+        return new Link(id, URI.create(linkString), updatedAt, checkedAt, List.of());
     }
 
     private boolean checkIfLinkExist(String linkString) {
