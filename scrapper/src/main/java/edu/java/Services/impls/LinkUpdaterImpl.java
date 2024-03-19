@@ -31,7 +31,7 @@ public class LinkUpdaterImpl implements LinkUpdater {
 
     @Override
     public int update() {
-        List<Link> links = linksDao.getLastNLinks(numOfLastLinks);
+        List<Link> links = linksDao.getLastNLinks(NUM_OF_LAST_N_LINKS);
         for (Link link : links) {
             if (link.getLink().getHost().equalsIgnoreCase(GITHUB_API_HOST)) {
                 GitHubResponse gitHubResponse = gitHubClient.fetch(link.getLink().getPath());
