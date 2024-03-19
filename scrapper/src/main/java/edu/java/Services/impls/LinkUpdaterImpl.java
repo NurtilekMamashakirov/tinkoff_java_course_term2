@@ -24,7 +24,7 @@ public class LinkUpdaterImpl implements LinkUpdater {
     private GitHubClient gitHubClient;
     private StackOverflowClient stackOverflowClient;
     private BotClient botClient;
-    private static final Integer numOfLastLinks = 20;
+    private static final Integer NUM_OF_LAST_N_LINKS = 20;
     private static final String GITHUB_API_HOST = "api.github.com";
     private static final String STACK_OVERFLOW_API_HOST = "api.stackexchange.com";
     private static final String DESCRIPTION = "This link was updated";
