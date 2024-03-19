@@ -1,8 +1,7 @@
 package edu.java.clients;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
-import edu.java.clients.StackOverflow.StackOverflowClient;
-import edu.java.clients.StackOverflow.StackOverflowResponse;
+import edu.java.dto.response.StackOverflowResponse;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,7 +41,7 @@ public class StackOverflowClientTest {
                     + "\"title\": \"testTitle\"," + "\n"
                     + "\"last_activity_date\": \"2024-01-12T12:39:38Z\"}")));
         StackOverflowClient client = new StackOverflowClient("http://localhost:8088");
-        StackOverflowResponse actual = client.fetch("/test").getResponse();
+        StackOverflowResponse actual = client.fetch("/test");
         assertThat(expected).isEqualTo(actual);
     }
 

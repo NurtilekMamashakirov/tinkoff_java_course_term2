@@ -12,3 +12,8 @@ server:
 
 logging:
   config: classpath:log4j2-plain.xml
+
+scrapper:
+  baseUrl: http://localhost:8080
+  linksUri: /links
+  chatUri: /tg-chat
