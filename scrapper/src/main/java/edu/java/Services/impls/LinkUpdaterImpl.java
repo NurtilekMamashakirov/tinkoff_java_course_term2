@@ -24,14 +24,14 @@ public class LinkUpdaterImpl implements LinkUpdater {
     private GitHubClient gitHubClient;
     private StackOverflowClient stackOverflowClient;
     private BotClient botClient;
-    private static final Integer numOfLastNLinks = 20;
+    private static final Integer numOfLastLinks = 20;
     private static final String GITHUB_API_HOST = "api.github.com";
     private static final String STACK_OVERFLOW_API_HOST = "api.stackexchange.com";
     private static final String DESCRIPTION = "This link was updated";
 
     @Override
     public int update() {
-        List<Link> links = linksDao.getLastNLinks(numOfLastNLinks);
+        List<Link> links = linksDao.getLastNLinks(numOfLastLinks);
         for (Link link : links) {
             if (link.getLink().getHost().equalsIgnoreCase(GITHUB_API_HOST)) {
                 GitHubResponse gitHubResponse = gitHubClient.fetch(link.getLink().getPath());

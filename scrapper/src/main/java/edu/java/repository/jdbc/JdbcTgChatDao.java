@@ -2,11 +2,11 @@ package edu.java.repository.jdbc;
 
 import edu.java.dto.models.Chat;
 import edu.java.repository.TgChatDao;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import java.util.ArrayList;
-import java.util.List;
 
 @Repository
 @AllArgsConstructor
