@@ -1,11 +1,10 @@
-package edu.java.clients.GitHub;
+package edu.java.clients;
 
-import edu.java.clients.Client;
-import edu.java.clients.ResponseDto;
+import edu.java.dto.response.GitHubResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.reactive.function.client.WebClient;
 
-public class GitHubClient implements Client {
+public class GitHubClient {
 
     @Value(value = "${api.github.baseUrl}")
     private String baseUrl;
@@ -26,13 +25,12 @@ public class GitHubClient implements Client {
             .build();
     }
 
-    @Override
-    public ResponseDto<GitHubResponse> fetch(String uri) {
-        return new ResponseDto<>(webClient
+    public GitHubResponse fetch(String uri) {
+        return webClient
             .get()
             .uri(uri)
             .retrieve()
             .bodyToMono(GitHubResponse.class)
-            .block());
+            .block();
     }
 }

@@ -1,6 +1,6 @@
 package edu.java.repository;
 
-public interface UsersDao {
+public interface TgChatDao {
     boolean deleteChat(Long id);
 
     boolean addChat(Long id);

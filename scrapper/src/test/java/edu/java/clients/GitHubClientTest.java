@@ -1,8 +1,7 @@
 package edu.java.clients;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
-import edu.java.clients.GitHub.GitHubClient;
-import edu.java.clients.GitHub.GitHubResponse;
+import edu.java.dto.response.GitHubResponse;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,7 +40,7 @@ public class GitHubClientTest {
                     + "\"full_name\": \"testName\"," + "\n"
                     + "\"updated_at\": \"2024-01-12T12:39:38Z\"}")));
         GitHubClient gitHubClient = new GitHubClient("http://localhost:8088");
-        GitHubResponse actual = gitHubClient.fetch("/test").getResponse();
+        GitHubResponse actual = gitHubClient.fetch("/test");
         assertThat(expected).isEqualTo(actual);
     }
 }

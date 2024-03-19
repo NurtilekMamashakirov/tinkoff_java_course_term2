@@ -1,4 +1,4 @@
-package edu.java.clients.TgBot;
+package edu.java.clients;
 
 import edu.java.dto.request.LinkUpdate;
 import org.springframework.beans.factory.annotation.Value;

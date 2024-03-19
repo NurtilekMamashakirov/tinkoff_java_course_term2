@@ -1,9 +1,10 @@
 package edu.java.repository;
 
+import edu.java.dto.models.Link;
 import java.util.List;
 
 public interface LinksDao {
-    List<String> getLinks(Long id);
+    List<Link> getLinks(Long id);
 
     boolean deleteLink(Long id, String link);
 

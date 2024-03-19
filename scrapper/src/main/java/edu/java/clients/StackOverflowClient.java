@@ -1,11 +1,10 @@
-package edu.java.clients.StackOverflow;
+package edu.java.clients;
 
-import edu.java.clients.Client;
-import edu.java.clients.ResponseDto;
+import edu.java.dto.response.StackOverflowResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.reactive.function.client.WebClient;
 
-public class StackOverflowClient implements Client {
+public class StackOverflowClient {
 
     @Value(value = "${api.stackOverflow.baseUrl}")
     private String baseUrl;
@@ -25,13 +24,12 @@ public class StackOverflowClient implements Client {
             .build();
     }
 
-    @Override
-    public ResponseDto<StackOverflowResponse> fetch(String uri) {
-        return new ResponseDto(webClient
+    public StackOverflowResponse fetch(String uri) {
+        return webClient
             .get()
             .uri(uri)
             .retrieve()
             .bodyToMono(StackOverflowResponse.class)
-            .block());
+            .block();
     }
 }
