@@ -3,6 +3,7 @@ package edu.java.clients;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import edu.java.dto.response.StackOverflowResponse;
 import java.time.OffsetDateTime;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,17 +33,18 @@ public class StackOverflowClientTest {
     @Test
     public void fetchTest() {
         StackOverflowResponse expected =
-            new StackOverflowResponse(1L, "testTitle", OffsetDateTime.parse("2024-01-12T12:39:38Z"));
+            new StackOverflowResponse(List.of(new StackOverflowResponse.Item(
+                "testTitle",
+                OffsetDateTime.parse("2024-01-12T12:39:38Z")
+            )));
         wireMockServer.stubFor(get(urlEqualTo("/test"))
             .willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json")
-                .withBody("{\"question_id\": \"1\"," + "\n"
-                    + "\"title\": \"testTitle\"," + "\n"
-                    + "\"last_activity_date\": \"2024-01-12T12:39:38Z\"}")));
+                .withBody("{\"items\":[{\"title\":\"testTitle\", \"last_activity_date\":\"2024-01-12T12:39:38Z\"}]}")));
         StackOverflowClient client = new StackOverflowClient("http://localhost:8088");
         StackOverflowResponse actual = client.fetch("/test");
-        assertThat(expected).isEqualTo(actual);
+        assertThat(actual).isEqualTo(expected);
     }
 
 }

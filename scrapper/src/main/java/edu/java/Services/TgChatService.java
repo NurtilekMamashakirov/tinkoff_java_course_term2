@@ -1,7 +1,9 @@
 package edu.java.Services;
 
 public interface TgChatService {
-    void register(long tgChatId);
+    boolean register(long tgChatId);
 
     void unregister(long tgChatId);
+
+    boolean checkIfChatExist(long tgChatId);
 }

@@ -16,19 +16,18 @@ public class JdbcLinkService implements LinkService {
 
     @Override
     public Link add(long tgChatId, URI url) {
-        linksDao.addLink(tgChatId, url.toString());
-        return null;
+        return linksDao.addLink(tgChatId, url.toString());
     }
 
     @Override
     public Link remove(long tgChatId, URI url) {
-        linksDao.deleteLink(tgChatId, url.toString());
-        return null;
+        return linksDao.deleteLink(tgChatId, url.toString());
     }
 
     @Override
     public List<Link> listAll(long tgChatId) {
         return linksDao.getLinks(tgChatId);
     }
+
 
 }

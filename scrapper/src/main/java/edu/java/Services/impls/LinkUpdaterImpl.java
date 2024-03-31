@@ -25,15 +25,16 @@ public class LinkUpdaterImpl implements LinkUpdater {
     private StackOverflowClient stackOverflowClient;
     private BotClient botClient;
     private static final Integer NUM_OF_LAST_N_LINKS = 20;
-    private static final String GITHUB_API_HOST = "api.github.com";
-    private static final String STACK_OVERFLOW_API_HOST = "api.stackexchange.com";
+    private static final String GITHUB_HOST = "github.com";
+    private static final String STACK_OVERFLOW_API_HOST = "stackoverflow.com";
     private static final String DESCRIPTION = "This link was updated";
 
     @Override
     public int update() {
+        int numOfUpdates = 0;
         List<Link> links = linksDao.getLastNLinks(NUM_OF_LAST_N_LINKS);
         for (Link link : links) {
-            if (link.getLink().getHost().equalsIgnoreCase(GITHUB_API_HOST)) {
+            if (link.getLink().getHost().equalsIgnoreCase(GITHUB_HOST)) {
                 GitHubResponse gitHubResponse = gitHubClient.fetch(link.getLink().getPath());
                 if (gitHubResponse.updatedAt().isAfter(link.getUpdatedAt())) {
                     linksDao.updateUpdatedTime(link.getLink().toString(), gitHubResponse.updatedAt());
@@ -49,14 +50,15 @@ public class LinkUpdaterImpl implements LinkUpdater {
                         chatsIds
                     );
                     botClient.fetch(linkUpdate);
+                    numOfUpdates++;
                 }
                 linksDao.updateCheckedTime(link.getLink().toString());
             }
 
             if (link.getLink().getHost().equalsIgnoreCase(STACK_OVERFLOW_API_HOST)) {
                 StackOverflowResponse stackOverflowResponse = stackOverflowClient.fetch(link.getLink().getPath());
-                if (stackOverflowResponse.lastActivityDate().isAfter(link.getUpdatedAt())) {
-                    linksDao.updateUpdatedTime(link.getLink().toString(), stackOverflowResponse.lastActivityDate());
+                if (stackOverflowResponse.items().get(0).lastActivityDate().isAfter(link.getUpdatedAt())) {
+                    linksDao.updateUpdatedTime(link.getLink().toString(), stackOverflowResponse.items().get(0).lastActivityDate());
                     List<Chat> chatsOfLink = tgChatDao.getChatsByLink(link.getId());
                     List<Integer> chatsIds = chatsOfLink
                         .stream()
@@ -69,10 +71,11 @@ public class LinkUpdaterImpl implements LinkUpdater {
                         chatsIds
                     );
                     botClient.fetch(linkUpdate);
+                    numOfUpdates++;
                 }
                 linksDao.updateCheckedTime(link.getLink().toString());
             }
         }
-        return 0;
+        return numOfUpdates;
     }
 }

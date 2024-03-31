@@ -8,12 +8,12 @@ public class ClientConfig {
 
     @Bean
     GitHubClient gitHubClient() {
-        return new GitHubClient();
+        return new GitHubClient("https://api.github.com/");
     }
 
     @Bean
     StackOverflowClient stackOverflowClient() {
-        return new StackOverflowClient();
+        return new StackOverflowClient("https://api.stackexchange.com/");
     }
 
 }

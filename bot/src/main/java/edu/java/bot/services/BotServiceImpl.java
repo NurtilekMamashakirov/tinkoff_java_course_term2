@@ -15,7 +15,7 @@ public class BotServiceImpl implements BotService {
     @Override
     public void handleUpdates(LinkUpdate linkUpdate) {
         for (Integer chatId : linkUpdate.tgChatIds()) {
-            SendMessage message = new SendMessage(linkUpdate.id(), UPDATE_MESSAGE + linkUpdate.url().toString());
+            SendMessage message = new SendMessage(chatId, UPDATE_MESSAGE + linkUpdate.url().toString());
             bot.execute(message);
         }
     }

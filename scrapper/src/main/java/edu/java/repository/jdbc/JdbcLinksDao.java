@@ -20,6 +20,7 @@ import org.springframework.stereotype.Repository;
 public class JdbcLinksDao implements LinksDao {
 
     private JdbcTemplate jdbcTemplate;
+    private final static String GET_ALL_LINKS_IDS_COMMAND = "SELECT id from link where status = 1";
     private final static String GET_LINKS_IDS_COMMAND =
         "SELECT link_id from chat_and_link where status = 1 and chat_id = ?";
     private final static String GET_LINK_STRING_BY_ID_COMMAND = "SELECT link.link from link WHERE id = ?";
@@ -60,44 +61,40 @@ public class JdbcLinksDao implements LinksDao {
     }
 
     @Override
-    public boolean deleteLink(Long id, String link) {
+    public Link deleteLink(Long id, String link) {
         if (!checkIfLinkExist(link)) {
-            return false; // link doesnt exist
+            return null; // link doesnt exist
         }
         Link linkToDelete = getLinkByString(link);
         jdbcTemplate.update(DELETE_LINK_BY_CHAT_COMMAND, id, linkToDelete.getId());
-        return true;
+        return linkToDelete;
     }
 
     @Override
-    public boolean addLink(Long id, String link) {
+    public Link addLink(Long id, String link) {
         if (!checkIfLinkExist(link)) {
             createNewLink(link);
         }
         Link linkToAdd = getLinkByString(link);
         if (checkIfChatHasLink(id, linkToAdd.getId())) {
-            return false; // chat already has this link
+            return null; // chat already has this link
         }
         jdbcTemplate.update(ADD_LINK_TO_CHAT_COMMAND, id, linkToAdd.getId());
-        return true;
+        return linkToAdd;
     }
 
     @Override
     public List<Link> getLastNLinks(Integer numOfLinksToReturn) {
-        RowMapper<Link> rowMapper = (resultSet, rowNum) -> {
-            Link link = new Link();
-            link.setId(resultSet.getLong("id"));
-            link.setLink(URI.create(resultSet.getString("link")));
-            link.setUpdatedAt(resultSet.getTimestamp("updated_at").toLocalDateTime()
-                .atOffset(ZoneOffset.of(ZoneOffset.systemDefault()
-                    .getId())));
-            link.setCheckedAt(resultSet.getTimestamp("checked_at").toLocalDateTime()
-                .atOffset(ZoneOffset.of(ZoneOffset.systemDefault()
-                    .getId())));
-            link.setChats(List.of());
-            return link;
-        };
-        List<Link> allLinks = jdbcTemplate.query(GET_ALL_ACTIVE_LINKS_COMMAND, rowMapper);
+        List<Long> linkIds = jdbcTemplate.queryForList(GET_ALL_LINKS_IDS_COMMAND, Long.class);
+        List<Link> allLinks = new ArrayList<>();
+        for (Long linkId : linkIds) {
+            String url = jdbcTemplate.queryForObject(GET_LINK_STRING_BY_ID_COMMAND, String.class, linkId);
+            OffsetDateTime checkedAt =
+                jdbcTemplate.queryForObject(GET_LINK_CHECKED_AT_BY_ID_COMMAND, OffsetDateTime.class, linkId);
+            OffsetDateTime updatedAt =
+                jdbcTemplate.queryForObject(GET_LINK_UPDATED_AT_BY_ID_COMMAND, OffsetDateTime.class, linkId);
+            allLinks.add(new Link(linkId, URI.create(url), updatedAt, checkedAt, List.of()));
+        }
         return allLinks
             .stream()
             .sorted(Comparator.comparing(Link::getCheckedAt))
@@ -107,12 +104,12 @@ public class JdbcLinksDao implements LinksDao {
 
     @Override
     public void updateCheckedTime(String link) {
-        jdbcTemplate.update(UPDATE_CHECKED_TIME_COMMAND, OffsetDateTime.now().toString(), link);
+        jdbcTemplate.update(UPDATE_CHECKED_TIME_COMMAND, OffsetDateTime.now(), link);
     }
 
     @Override
     public void updateUpdatedTime(String link, OffsetDateTime updatedAt) {
-        jdbcTemplate.update(UPDATE_UPDATED_TIME_COMMAND, updatedAt.toString(), link);
+        jdbcTemplate.update(UPDATE_UPDATED_TIME_COMMAND, updatedAt, link);
     }
 
     private Link getLinkByString(String linkString) {

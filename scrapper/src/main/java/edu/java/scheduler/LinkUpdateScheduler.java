@@ -14,10 +14,11 @@ import org.springframework.stereotype.Component;
 public class LinkUpdateScheduler {
 
     private LinkUpdater linkUpdater;
+    private final static String UPDATES_INFO = "Было обновлено %s ссылок";
 
     @Scheduled(fixedDelayString = "#{@schedulerInterval}")
     public void update() {
-        linkUpdater.update();
+        log.info(String.format(UPDATES_INFO, linkUpdater.update()));
     }
 
 }

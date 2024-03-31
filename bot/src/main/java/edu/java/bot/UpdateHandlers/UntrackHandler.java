@@ -1,14 +1,17 @@
 package edu.java.bot.UpdateHandlers;
 
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.model.User;
 import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.dataBase.UserAndLinksDataBase;
-import edu.java.bot.dataBase.UsersDataBase;
+import edu.java.bot.clients.ScrapperClient;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@AllArgsConstructor
+@NoArgsConstructor
 public class UntrackHandler implements CommandHandler {
+    private ScrapperClient scrapperClient;
     private final static String COMMAND = "/untrack";
     private final static Pattern COMMAND_PATTERN = Pattern.compile("/untrack (.*)");
     private final static String UNAUTHORIZED_USER_MESSAGE = "Используйте /start, чтобы авторизоваться";
@@ -18,18 +21,16 @@ public class UntrackHandler implements CommandHandler {
 
     @Override
     public SendMessage handle(Update update) {
-        User user = UsersDataBase.getUserById(update.message().from().id());
         Long chatId = update.message().chat().id();
         String url = update.message().text().split(" ")[1];
-        if (user != null) {
-            if (UserAndLinksDataBase.deleteLinkToUser(user.id(), url)) {
-                return new SendMessage(chatId, SUCCESSFUL_DELETE_MESSAGE);
-            } else {
-                return new SendMessage(chatId, ERROR_DELETE_MESSAGE);
-            }
-        } else {
+        if (!scrapperClient.checkIfChatExist(chatId)) {
             return new SendMessage(chatId, UNAUTHORIZED_USER_MESSAGE);
         }
+        if (!scrapperClient.checkIfLinkExist(chatId, url)) {
+            return new SendMessage(chatId, ERROR_DELETE_MESSAGE);
+        }
+        scrapperClient.removeLink(chatId, url);
+        return new SendMessage(chatId, SUCCESSFUL_DELETE_MESSAGE);
     }
 
     @Override

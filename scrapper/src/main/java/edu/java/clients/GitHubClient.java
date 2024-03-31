@@ -2,14 +2,16 @@ package edu.java.clients;
 
 import edu.java.dto.response.GitHubResponse;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import java.util.List;
 
 @Component
 public class GitHubClient {
 
     @Value(value = "${api.github.baseUrl}")
-    private String baseUrl;
+    private String baseUrl = "https://api.github.com/repos";
 
     private WebClient webClient;
 
