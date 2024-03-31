@@ -8,6 +8,7 @@ import edu.java.bot.dataBase.UsersDataBase;
 import java.util.List;
 
 public class ListHandler implements CommandHandler {
+
     private final static String COMMAND = "/list";
     private final static String UNAUTHORIZED_USER_MESSAGE = "Используйте /start, чтобы авторизоваться";
     private final static String NO_LINKS_MESSAGE = "У вас не отслеживаемых ссылок. \n"
