@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-public class JdbcTgChatDaoTest extends IntegrationEnvironment {
+public class JdbcTgChatDaoTestEntity extends IntegrationEnvironment {
 
     @Autowired
     private JdbcTgChatDao chatRepository;

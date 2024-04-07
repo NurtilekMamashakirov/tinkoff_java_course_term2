@@ -14,12 +14,9 @@ public class TrackHandler implements CommandHandler {
     private ScrapperClient scrapperClient;
     private final static String COMMAND = "/track";
     private final static Pattern COMMAND_GITHUB_PATTERN =
-        Pattern.compile("^/track https://github\\.com/(.*)/(.*)$");
+        Pattern.compile("^/track (https://github\\.com/(.*)/(.*))$");
     private final static Pattern COMMAND_STACK_OVERFLOW_PATTERN =
-        Pattern.compile("^/track https://stackoverflow\\.com/questions/(.*)/(.*)$");
-    private final static String BASE_GITHUB_URL = "https://api.github.com/repos";
-    private final static String BASE_STACK_OVERFLOW_URL = "https://api.stackexchange.com/2.3/questions";
-    private final static String STACK_OVERFLOW_URL_PARAM = "?site=stackoverflow";
+        Pattern.compile("^/track (https://(ru|)stackoverflow\\.com/questions/(.*)/(.*))$");
     private final static String UNAUTHORIZED_USER_MESSAGE = "Используйте /start, чтобы авторизоваться";
     private final static String NOT_PERMITTED_LINK = "Неверная ссылка";
     private final static String SUCCESSFUL_ADD_MESSAGE = "Ссылка успешно добавлена";
@@ -35,12 +32,10 @@ public class TrackHandler implements CommandHandler {
         }
         String url = "";
         if (matcherGitHub.matches()) {
-            url = BASE_GITHUB_URL + "/" + matcherGitHub.group(1) + "/" + matcherGitHub.group(2);
+            url = matcherGitHub.group(1);
         }
         if (matcherStackOverflow.matches()) {
-            url = BASE_STACK_OVERFLOW_URL + "/" +
-                matcherStackOverflow.group(1) +
-                STACK_OVERFLOW_URL_PARAM;
+            url = matcherStackOverflow.group(1);
         }
         if (!scrapperClient.checkIfChatExist(chatId)) {
             return new SendMessage(chatId, UNAUTHORIZED_USER_MESSAGE);

@@ -58,7 +58,10 @@ public class LinkUpdaterImpl implements LinkUpdater {
             if (link.getLink().getHost().equalsIgnoreCase(STACK_OVERFLOW_API_HOST)) {
                 StackOverflowResponse stackOverflowResponse = stackOverflowClient.fetch(link.getLink().getPath());
                 if (stackOverflowResponse.items().get(0).lastActivityDate().isAfter(link.getUpdatedAt())) {
-                    linksDao.updateUpdatedTime(link.getLink().toString(), stackOverflowResponse.items().get(0).lastActivityDate());
+                    linksDao.updateUpdatedTime(
+                        link.getLink().toString(),
+                        stackOverflowResponse.items().get(0).lastActivityDate()
+                    );
                     List<Chat> chatsOfLink = tgChatDao.getChatsByLink(link.getId());
                     List<Integer> chatsIds = chatsOfLink
                         .stream()
