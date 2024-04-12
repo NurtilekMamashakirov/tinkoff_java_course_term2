@@ -1,7 +1,6 @@
 package edu.java.repository.jdbc;
 
 import edu.java.dto.models.Chat;
-import edu.java.repository.TgChatDao;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;

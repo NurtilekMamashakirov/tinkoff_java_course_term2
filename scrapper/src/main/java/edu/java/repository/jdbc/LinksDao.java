@@ -1,4 +1,4 @@
-package edu.java.repository;
+package edu.java.repository.jdbc;
 
 import edu.java.dto.models.Link;
 import java.time.OffsetDateTime;

@@ -1,4 +1,4 @@
-package edu.java.Services;
+package edu.java.services;
 
 public interface TgChatService {
     boolean register(long tgChatId);

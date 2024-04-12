@@ -1,6 +1,7 @@
 package edu.java.controllers;
 
-import edu.java.Services.jdbc.JdbcLinkService;
+import edu.java.services.LinkService;
+import edu.java.services.jdbc.JdbcLinkService;
 import edu.java.dto.models.Link;
 import edu.java.dto.request.AddLinkRequest;
 import edu.java.dto.response.LinkResponse;
@@ -14,7 +15,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -26,7 +26,7 @@ public class LinksController {
 
     private final static String INVALID_REQUEST_MESSAGE = "Request's parameters are invalid";
     private final static String INVALID_ID_DESCRIPTION = "Id is invalid";
-    private JdbcLinkService linkService;
+    private LinkService linkService;
 
     @GetMapping("/links")
     public ResponseEntity<ListLinksResponse> getLinks(@RequestHeader("Tg-Chat-Id") Long id) {

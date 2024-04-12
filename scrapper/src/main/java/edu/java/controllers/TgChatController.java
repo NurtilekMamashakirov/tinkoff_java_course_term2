@@ -1,6 +1,7 @@
 package edu.java.controllers;
 
-import edu.java.Services.jdbc.JdbcTgChatService;
+import edu.java.services.TgChatService;
+import edu.java.services.jdbc.JdbcTgChatService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class TgChatController {
 
-    private JdbcTgChatService tgChatService;
+    private TgChatService tgChatService;
 
     @PostMapping("/tg-chat/{id}")
     public ResponseEntity<Void> registerChat(@PathVariable Long id) {

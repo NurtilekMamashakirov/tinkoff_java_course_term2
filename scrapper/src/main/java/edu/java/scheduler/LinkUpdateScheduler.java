@@ -1,6 +1,6 @@
 package edu.java.scheduler;
 
-import edu.java.Services.LinkUpdater;
+import edu.java.services.LinkUpdater;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.EnableScheduling;

@@ -1,6 +1,6 @@
-package edu.java.Services.impls;
+package edu.java.services.jdbc;
 
-import edu.java.Services.LinkUpdater;
+import edu.java.services.LinkUpdater;
 import edu.java.clients.BotClient;
 import edu.java.clients.GitHubClient;
 import edu.java.clients.StackOverflowClient;
@@ -13,11 +13,9 @@ import edu.java.repository.jdbc.JdbcLinksDao;
 import edu.java.repository.jdbc.JdbcTgChatDao;
 import java.util.List;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
 
-@Component
 @AllArgsConstructor
-public class LinkUpdaterImpl implements LinkUpdater {
+public class JdbcLinkUpdater implements LinkUpdater {
 
     private JdbcLinksDao linksDao;
     private JdbcTgChatDao tgChatDao;

@@ -1,4 +1,4 @@
-package edu.java.Services;
+package edu.java.services;
 
 import edu.java.dto.models.Link;
 import java.net.URI;

@@ -1,11 +1,9 @@
-package edu.java.Services.jdbc;
+package edu.java.services.jdbc;
 
-import edu.java.Services.TgChatService;
 import edu.java.repository.jdbc.JdbcTgChatDao;
+import edu.java.services.TgChatService;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
 
-@Service
 @AllArgsConstructor
 public class JdbcTgChatService implements TgChatService {
 

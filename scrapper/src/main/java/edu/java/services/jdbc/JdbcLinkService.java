@@ -1,14 +1,12 @@
-package edu.java.Services.jdbc;
+package edu.java.services.jdbc;
 
-import edu.java.Services.LinkService;
 import edu.java.dto.models.Link;
 import edu.java.repository.jdbc.JdbcLinksDao;
+import edu.java.services.LinkService;
 import java.net.URI;
 import java.util.List;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
 
-@Service
 @AllArgsConstructor
 public class JdbcLinkService implements LinkService {
 
