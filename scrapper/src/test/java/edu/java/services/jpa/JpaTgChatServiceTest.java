@@ -1,6 +1,7 @@
 package edu.java.services.jpa;
 
 import edu.java.scrapper.IntegrationEnvironment;
+import edu.java.services.TgChatService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 public class JpaTgChatServiceTest extends IntegrationEnvironment {
     @Autowired
-    private JpaTgChatService chatService;
+    private TgChatService chatService;
     @Autowired
     private JdbcTemplate jdbcTemplate;
     private static final String COUNT_CHATS_COMMAND = "SELECT count(*) from chat where status = 1";

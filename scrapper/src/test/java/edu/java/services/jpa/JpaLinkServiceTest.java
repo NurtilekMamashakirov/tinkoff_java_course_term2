@@ -2,22 +2,24 @@ package edu.java.services.jpa;
 
 import edu.java.dto.models.Link;
 import edu.java.scrapper.IntegrationEnvironment;
+import edu.java.services.LinkService;
+import edu.java.services.TgChatService;
+import java.net.URI;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-import java.net.URI;
-import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 public class JpaLinkServiceTest extends IntegrationEnvironment {
     @Autowired
-    private JpaLinkService linkService;
+    private LinkService linkService;
     @Autowired
-    private JpaTgChatService chatService;
+    private TgChatService chatService;
     @Autowired
     private JdbcTemplate jdbcTemplate;
     private final static long ID = 1L;
