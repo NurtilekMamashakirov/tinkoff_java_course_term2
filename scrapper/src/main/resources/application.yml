@@ -1,5 +1,5 @@
 app:
-  database-access-type: jpa
+  database-access-type: jdbc
   scheduler:
     enable: true
     interval: 10s

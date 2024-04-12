@@ -20,12 +20,14 @@ import lombok.AllArgsConstructor;
 public class JpaLinkService implements LinkService {
     private JpaLinkRepository linkRepository;
     private JpaTgChatRepository chatRepository;
+    private static final String EXCEPTION_MESSAGE = "Chat is not registered";
+    private static final String EXCEPTION_DESCRIPTION = "No such chat";
 
     @Override
     public Link add(long tgChatId, URI url) {
         ChatEntity chat = chatRepository
             .findById(tgChatId)
-            .orElseThrow(() -> new UsersException("Chat is not registered", "No such chat"));
+            .orElseThrow(() -> new UsersException(EXCEPTION_MESSAGE, EXCEPTION_DESCRIPTION));
         LinkEntity link = getOrCreateLink(url);
         chat.addLink(link);
         chatRepository.save(chat);
@@ -42,7 +44,7 @@ public class JpaLinkService implements LinkService {
     public Link remove(long tgChatId, URI url) {
         ChatEntity chat = chatRepository
             .findById(tgChatId)
-            .orElseThrow(() -> new UsersException("Chat is not registered", "No such chat"));
+            .orElseThrow(() -> new UsersException(EXCEPTION_MESSAGE, EXCEPTION_DESCRIPTION));
         Boolean chatHasLink = chat
             .getLinks()
             .stream()
@@ -72,7 +74,7 @@ public class JpaLinkService implements LinkService {
     public List<Link> listAll(long tgChatId) {
         ChatEntity chat = chatRepository
             .findById(tgChatId)
-            .orElseThrow(() -> new UsersException("Chat is not registered", "No such chat"));
+            .orElseThrow(() -> new UsersException(EXCEPTION_MESSAGE, EXCEPTION_DESCRIPTION));
         Set<LinkEntity> setOfLinkEntity = chat.getLinks();
         ArrayList<Link> listOfLinks = new ArrayList<>();
         for (LinkEntity linkEntity : setOfLinkEntity) {

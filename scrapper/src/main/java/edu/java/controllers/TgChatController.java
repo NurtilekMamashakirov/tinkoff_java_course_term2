@@ -1,7 +1,6 @@
 package edu.java.controllers;
 
 import edu.java.services.TgChatService;
-import edu.java.services.jdbc.JdbcTgChatService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;

@@ -32,7 +32,6 @@ public class JpaLinkUpdater implements LinkUpdater {
         int numOfUpdates = 0;
         List<LinkEntity> links = getLastNLinks();
         for (LinkEntity link : links) {
-            System.out.println(link);
             if (link.getUrl().getHost().equalsIgnoreCase(GITHUB_HOST)) {
                 GitHubResponse gitHubResponse = gitHubClient.fetch(link.getUrl().getPath());
                 if (gitHubResponse.updatedAt().isAfter(link.getUpdatedAt())) {

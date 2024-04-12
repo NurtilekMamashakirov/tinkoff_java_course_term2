@@ -8,7 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @AllArgsConstructor
 public class JpaTgChatService implements TgChatService {
+
     private JpaTgChatRepository chatRepository;
+
     @Override
     @Transactional
     public boolean register(long tgChatId) {

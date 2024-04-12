@@ -1,6 +1,5 @@
 package edu.java.services.jdbc;
 
-import edu.java.services.LinkUpdater;
 import edu.java.clients.BotClient;
 import edu.java.clients.GitHubClient;
 import edu.java.clients.StackOverflowClient;
@@ -11,6 +10,7 @@ import edu.java.dto.response.GitHubResponse;
 import edu.java.dto.response.StackOverflowResponse;
 import edu.java.repository.jdbc.JdbcLinksDao;
 import edu.java.repository.jdbc.JdbcTgChatDao;
+import edu.java.services.LinkUpdater;
 import java.util.List;
 import lombok.AllArgsConstructor;
 

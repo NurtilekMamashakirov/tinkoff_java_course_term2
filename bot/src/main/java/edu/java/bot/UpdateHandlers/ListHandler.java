@@ -3,9 +3,9 @@ package edu.java.bot.UpdateHandlers;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.clients.ScrapperClient;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor

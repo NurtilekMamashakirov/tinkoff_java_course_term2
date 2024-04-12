@@ -10,11 +10,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import lombok.Data;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 import java.util.Set;
+import lombok.Data;
 
 @Data
 @Entity
@@ -41,8 +41,8 @@ public class LinkEntity {
             return false;
         }
         LinkEntity link = (LinkEntity) o;
-        return Objects.equals(id, link.id) && Objects.equals(url, link.url) &&
-            Objects.equals(updatedAt, link.updatedAt) && Objects.equals(checkedAt, link.checkedAt);
+        return Objects.equals(id, link.id) && Objects.equals(url, link.url)
+            && Objects.equals(updatedAt, link.updatedAt) && Objects.equals(checkedAt, link.checkedAt);
     }
 
     @Override
