@@ -4,7 +4,7 @@ import edu.java.bot.dto.request.AddLinkRequest;
 import edu.java.bot.dto.request.RemoveLinkRequest;
 import edu.java.bot.dto.response.LinkResponse;
 import edu.java.bot.dto.response.ListLinksResponse;
-import java.net.URISyntaxException;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -34,7 +34,7 @@ public class ScrapperClient {
             .build();
     }
 
-    public LinkResponse addLink(Long id, String link) throws URISyntaxException {
+    public LinkResponse addLink(Long id, String link) {
         AddLinkRequest addLinkRequest = new AddLinkRequest(link);
         return webClient
             .post()
@@ -85,4 +85,22 @@ public class ScrapperClient {
             .bodyToMono(Void.class)
             .block();
     }
+
+    public boolean checkIfChatExist(Long id) {
+        String uri = chatUri + "/" + id.toString();
+        return Boolean.TRUE.equals(webClient
+            .get()
+            .uri(uri)
+            .retrieve()
+            .bodyToMono(Boolean.class)
+            .block());
+    }
+
+    public boolean checkIfLinkExist(Long id, String link) {
+        List<LinkResponse> listLinksResponse = getLinks(id).links();
+        return listLinksResponse
+            .stream()
+            .anyMatch(linkResponse -> linkResponse.url().toString().equalsIgnoreCase(link));
+    }
+
 }

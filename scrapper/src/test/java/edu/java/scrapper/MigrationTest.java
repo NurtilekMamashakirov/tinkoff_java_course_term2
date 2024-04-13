@@ -13,7 +13,7 @@ public class MigrationTest extends IntegrationEnvironment {
     @Test
     @SneakyThrows
     void linkTableCreateTest() {
-        List<String> columns = List.of("id", "link", "updated_at");
+        List<String> columns = List.of("id", "link", "updated_at", "checked_at", "status");
         String sqlQuery =
             "SELECT column_name FROM information_schema.columns WHERE table_name = 'link';";
         Connection connection = POSTGRES.createConnection("");
@@ -29,7 +29,7 @@ public class MigrationTest extends IntegrationEnvironment {
     @Test
     @SneakyThrows
     void chatTableCreateTest() {
-        List<String> columns = List.of("id", "tg_chat_id");
+        List<String> columns = List.of("id", "status");
         String sqlQuery =
             "SELECT column_name FROM information_schema.columns WHERE table_name = 'chat';";
         Connection connection = POSTGRES.createConnection("");

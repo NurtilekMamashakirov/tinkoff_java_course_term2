@@ -1,11 +1,15 @@
 package edu.java.controllers;
 
-import edu.java.Services.ScrapperService;
+import edu.java.dto.models.Link;
 import edu.java.dto.request.AddLinkRequest;
 import edu.java.dto.response.LinkResponse;
 import edu.java.dto.response.ListLinksResponse;
 import edu.java.exceptions.BadRequestException;
+import edu.java.services.LinkService;
 import jakarta.validation.Valid;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,14 +25,20 @@ public class LinksController {
 
     private final static String INVALID_REQUEST_MESSAGE = "Request's parameters are invalid";
     private final static String INVALID_ID_DESCRIPTION = "Id is invalid";
-    private ScrapperService scrapperService;
+    private LinkService linkService;
 
     @GetMapping("/links")
     public ResponseEntity<ListLinksResponse> getLinks(@RequestHeader("Tg-Chat-Id") Long id) {
         checkId(id);
+        List<LinkResponse> linkResponses = new ArrayList<>();
+        List<Link> links = linkService.listAll(id);
+        for (Link link : links) {
+            linkResponses.add(new LinkResponse(link.getId().intValue(), link.getLink().toString()));
+        }
+        ListLinksResponse listLinksResponse = new ListLinksResponse(linkResponses, linkResponses.size());
         return ResponseEntity
             .ok()
-            .body(scrapperService.getLinks(id));
+            .body(listLinksResponse);
     }
 
     @PostMapping("/links")
@@ -37,9 +47,10 @@ public class LinksController {
         @Valid @RequestBody AddLinkRequest request
     ) {
         checkId(id);
+        Link link = linkService.add(id, URI.create(request.link()));
         return ResponseEntity
             .ok()
-            .body(scrapperService.addLink(id, request.link()));
+            .body(new LinkResponse(link.getId().intValue(), link.getLink().toString()));
     }
 
     @DeleteMapping("/links")
@@ -48,9 +59,10 @@ public class LinksController {
         @Valid @RequestBody AddLinkRequest request
     ) {
         checkId(id);
+        Link link = linkService.remove(id, URI.create(request.link()));
         return ResponseEntity
             .ok()
-            .body(scrapperService.deleteLink(id, request.link()));
+            .body(new LinkResponse(link.getId().intValue(), link.getLink().toString()));
     }
 
     private void checkId(Long id) {
