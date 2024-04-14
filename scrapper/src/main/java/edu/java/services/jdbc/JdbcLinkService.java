@@ -1,7 +1,7 @@
 package edu.java.services.jdbc;
 
 import edu.java.dto.models.Link;
-import edu.java.repository.jdbc.JdbcLinksDao;
+import edu.java.repository.jdbc.JdbcLinkRepository;
 import edu.java.services.LinkService;
 import java.net.URI;
 import java.util.List;
@@ -10,7 +10,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class JdbcLinkService implements LinkService {
 
-    private JdbcLinksDao linksDao;
+    private JdbcLinkRepository linksDao;
 
     @Override
     public Link add(long tgChatId, URI url) {

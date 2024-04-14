@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @AllArgsConstructor
-public class JdbcTgChatDao implements TgChatDao {
+public class JdbcTgChatRepository implements TgChatRepository {
 
     private JdbcTemplate jdbcTemplate;
     private static final String STATUS_UPDATE_COMMAND = "UPDATE chat SET status = ? WHERE id = ?";
@@ -33,7 +33,7 @@ public class JdbcTgChatDao implements TgChatDao {
         List<Long> chatIds = jdbcTemplate.queryForList(GET_CHAT_IDS_BY_LINK, Long.class, linkId);
         List<Chat> chats = new ArrayList<>();
         for (Long chatId : chatIds) {
-            chats.add(new Chat(chatId, List.of()));
+            chats.add(new Chat(chatId));
         }
         return chats;
     }

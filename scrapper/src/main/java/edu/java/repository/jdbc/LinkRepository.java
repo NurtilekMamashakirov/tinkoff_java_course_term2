@@ -4,7 +4,7 @@ import edu.java.dto.models.Link;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-public interface LinksDao {
+public interface LinkRepository {
     List<Link> getLinks(Long id);
 
     Link deleteLink(Long id, String link);

@@ -1,4 +1,4 @@
-package edu.java.dto.response;
+package edu.java.clients.stackOverflow.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;

@@ -1,8 +1,8 @@
 package edu.java.configuration;
 
-import edu.java.clients.BotClient;
-import edu.java.clients.GitHubClient;
-import edu.java.clients.StackOverflowClient;
+import edu.java.clients.bot.BotClient;
+import edu.java.clients.github.GitHubClient;
+import edu.java.clients.stackOverflow.StackOverflowClient;
 import edu.java.repository.jpa.JpaLinkRepository;
 import edu.java.repository.jpa.JpaTgChatRepository;
 import edu.java.services.LinkService;

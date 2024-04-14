@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Component
 @AllArgsConstructor
-public class JdbcLinksDao implements LinksDao {
+public class JdbcLinkRepository implements LinkRepository {
 
     private JdbcTemplate jdbcTemplate;
     private final static String GET_ALL_LINKS_IDS_COMMAND = "SELECT id from link where status = 1";
@@ -52,7 +52,7 @@ public class JdbcLinksDao implements LinksDao {
                 jdbcTemplate.queryForObject(GET_LINK_UPDATED_AT_BY_ID_COMMAND, OffsetDateTime.class, linkId);
             OffsetDateTime checkedAt =
                 jdbcTemplate.queryForObject(GET_LINK_CHECKED_AT_BY_ID_COMMAND, OffsetDateTime.class, linkId);
-            links.add(new Link(linkId, URI.create(linkString), updatedAt, checkedAt, List.of()));
+            links.add(new Link(linkId, URI.create(linkString), updatedAt, checkedAt));
         }
         return links;
     }
@@ -90,7 +90,7 @@ public class JdbcLinksDao implements LinksDao {
                 jdbcTemplate.queryForObject(GET_LINK_CHECKED_AT_BY_ID_COMMAND, OffsetDateTime.class, linkId);
             OffsetDateTime updatedAt =
                 jdbcTemplate.queryForObject(GET_LINK_UPDATED_AT_BY_ID_COMMAND, OffsetDateTime.class, linkId);
-            allLinks.add(new Link(linkId, URI.create(url), updatedAt, checkedAt, List.of()));
+            allLinks.add(new Link(linkId, URI.create(url), updatedAt, checkedAt));
         }
         return allLinks
             .stream()
@@ -123,7 +123,7 @@ public class JdbcLinksDao implements LinksDao {
                 OffsetDateTime.class,
                 linkString
             );
-        return new Link(id, URI.create(linkString), updatedAt, checkedAt, List.of());
+        return new Link(id, URI.create(linkString), updatedAt, checkedAt);
     }
 
     private boolean checkIfLinkExist(String linkString) {

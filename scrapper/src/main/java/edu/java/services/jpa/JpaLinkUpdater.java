@@ -1,13 +1,13 @@
 package edu.java.services.jpa;
 
-import edu.java.clients.BotClient;
-import edu.java.clients.GitHubClient;
-import edu.java.clients.StackOverflowClient;
+import edu.java.clients.bot.BotClient;
+import edu.java.clients.github.GitHubClient;
+import edu.java.clients.stackOverflow.StackOverflowClient;
 import edu.java.dto.entity.ChatEntity;
 import edu.java.dto.entity.LinkEntity;
 import edu.java.dto.request.LinkUpdate;
-import edu.java.dto.response.GitHubResponse;
-import edu.java.dto.response.StackOverflowResponse;
+import edu.java.clients.github.dto.GitHubResponse;
+import edu.java.clients.stackOverflow.dto.StackOverflowResponse;
 import edu.java.repository.jpa.JpaLinkRepository;
 import edu.java.services.LinkUpdater;
 import java.time.OffsetDateTime;

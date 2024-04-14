@@ -12,11 +12,11 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-public class JdbcLinksDaoTest extends IntegrationEnvironment {
+public class JdbcLinkRepositoryTest extends IntegrationEnvironment {
     @Autowired
-    private JdbcLinksDao linkRepository;
+    private JdbcLinkRepository linkRepository;
     @Autowired
-    private JdbcTgChatDao chatRepository;
+    private JdbcTgChatRepository chatRepository;
     @Autowired
     private JdbcTemplate jdbcTemplate;
 

@@ -1,13 +1,13 @@
 package edu.java.services.jdbc;
 
-import edu.java.repository.jdbc.JdbcTgChatDao;
+import edu.java.repository.jdbc.JdbcTgChatRepository;
 import edu.java.services.TgChatService;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class JdbcTgChatService implements TgChatService {
 
-    private JdbcTgChatDao tgChatDao;
+    private JdbcTgChatRepository tgChatDao;
 
     @Override
     public boolean register(long tgChatId) {

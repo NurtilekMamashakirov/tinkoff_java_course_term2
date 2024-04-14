@@ -1,16 +1,7 @@
 package edu.java.clients;
 
-import com.github.tomakehurst.wiremock.WireMockServer;
-import edu.java.dto.response.StackOverflowResponse;
-import java.time.OffsetDateTime;
-import java.util.List;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest

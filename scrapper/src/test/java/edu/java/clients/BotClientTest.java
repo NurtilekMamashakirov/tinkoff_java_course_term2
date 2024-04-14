@@ -2,6 +2,7 @@ package edu.java.clients;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
+import edu.java.clients.bot.BotClient;
 import edu.java.dto.request.LinkUpdate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

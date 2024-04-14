@@ -10,5 +10,4 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Chat {
     private Long id;
-    private List<Link> links;
 }

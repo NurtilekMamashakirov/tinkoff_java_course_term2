@@ -53,7 +53,7 @@ public class JpaLinkServiceTest extends IntegrationEnvironment {
         chatService.register(ID);
         linkService.add(ID, url);
         List<Link> linksOfChat = linkService.listAll(ID);
-        assertThat(linksOfChat.get(0).getLink()).isEqualTo(url);
+        assertThat(linksOfChat.get(0).getUrl()).isEqualTo(url);
     }
 
     @Test

@@ -16,7 +16,7 @@ public class TrackHandler implements CommandHandler {
     private final static Pattern COMMAND_GITHUB_PATTERN =
         Pattern.compile("^/track (https://github\\.com/(.*)/(.*))$");
     private final static Pattern COMMAND_STACK_OVERFLOW_PATTERN =
-        Pattern.compile("^/track (https://(ru|)stackoverflow\\.com/questions/(.*)/(.*))$");
+        Pattern.compile("^/track (https://(ru\\.|)stackoverflow\\.com/questions/(.*)/(.*))$");
     private final static String UNAUTHORIZED_USER_MESSAGE = "Используйте /start, чтобы авторизоваться";
     private final static String NOT_PERMITTED_LINK = "Неверная ссылка";
     private final static String SUCCESSFUL_ADD_MESSAGE = "Ссылка успешно добавлена";

@@ -35,8 +35,7 @@ public class JpaLinkService implements LinkService {
             link.getId(),
             link.getUrl(),
             link.getUpdatedAt(),
-            link.getCheckedAt(),
-            List.of()
+            link.getCheckedAt()
         );
     }
 
@@ -65,8 +64,7 @@ public class JpaLinkService implements LinkService {
             linkToRemove.getId(),
             linkToRemove.getUrl(),
             linkToRemove.getUpdatedAt(),
-            linkToRemove.getCheckedAt(),
-            List.of()
+            linkToRemove.getCheckedAt()
         );
     }
 
@@ -82,8 +80,7 @@ public class JpaLinkService implements LinkService {
                 linkEntity.getId(),
                 linkEntity.getUrl(),
                 linkEntity.getUpdatedAt(),
-                linkEntity.getCheckedAt(),
-                List.of()
+                linkEntity.getCheckedAt()
             );
             listOfLinks.add(link);
         }

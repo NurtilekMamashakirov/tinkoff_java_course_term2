@@ -33,7 +33,7 @@ public class LinksController {
         List<LinkResponse> linkResponses = new ArrayList<>();
         List<Link> links = linkService.listAll(id);
         for (Link link : links) {
-            linkResponses.add(new LinkResponse(link.getId().intValue(), link.getLink().toString()));
+            linkResponses.add(new LinkResponse(link.getId().intValue(), link.getUrl().toString()));
         }
         ListLinksResponse listLinksResponse = new ListLinksResponse(linkResponses, linkResponses.size());
         return ResponseEntity
@@ -50,7 +50,7 @@ public class LinksController {
         Link link = linkService.add(id, URI.create(request.link()));
         return ResponseEntity
             .ok()
-            .body(new LinkResponse(link.getId().intValue(), link.getLink().toString()));
+            .body(new LinkResponse(link.getId().intValue(), link.getUrl().toString()));
     }
 
     @DeleteMapping("/links")
@@ -62,7 +62,7 @@ public class LinksController {
         Link link = linkService.remove(id, URI.create(request.link()));
         return ResponseEntity
             .ok()
-            .body(new LinkResponse(link.getId().intValue(), link.getLink().toString()));
+            .body(new LinkResponse(link.getId().intValue(), link.getUrl().toString()));
     }
 
     private void checkId(Long id) {

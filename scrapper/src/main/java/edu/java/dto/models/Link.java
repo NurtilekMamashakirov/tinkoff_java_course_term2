@@ -12,8 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Link {
     private Long id;
-    private URI link;
+    private URI url;
     private OffsetDateTime updatedAt;
     private OffsetDateTime checkedAt;
-    private List<Chat> chats;
 }

@@ -1,7 +1,7 @@
 package edu.java.configuration;
 
-import edu.java.clients.GitHubClient;
-import edu.java.clients.StackOverflowClient;
+import edu.java.clients.github.GitHubClient;
+import edu.java.clients.stackOverflow.StackOverflowClient;
 import org.springframework.context.annotation.Bean;
 
 public class ClientConfig {
