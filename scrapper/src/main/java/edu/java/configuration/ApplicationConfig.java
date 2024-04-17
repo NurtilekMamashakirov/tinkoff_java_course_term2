@@ -3,6 +3,9 @@ package edu.java.configuration;
 import jakarta.validation.constraints.NotNull;
 import java.time.Duration;
 import jdk.jfr.Name;
+import org.jooq.conf.RenderQuotedNames;
+import org.jooq.impl.DefaultConfiguration;
+import org.springframework.boot.autoconfigure.jooq.DefaultConfigurationCustomizer;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.context.annotation.Bean;
@@ -34,6 +37,14 @@ public record ApplicationConfig(
 
     public enum AccessType {
         JDBC, JPA, JOOQ
+    }
+
+    @Bean
+    public DefaultConfigurationCustomizer postgresJooqCustomizer() {
+        return (DefaultConfiguration c) -> c.settings()
+            .withRenderSchema(false)
+            .withRenderFormatted(true)
+            .withRenderQuotedNames(RenderQuotedNames.NEVER);
     }
 
 }

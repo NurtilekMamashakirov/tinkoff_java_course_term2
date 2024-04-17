@@ -31,7 +31,7 @@ public class JdbcLinkRepository implements LinkRepository {
 
     private final static String DELETE_LINK_BY_CHAT_COMMAND =
         "UPDATE chat_and_link SET status = 0 where chat_id = ? and link_id = ?";
-    private final static String CHECK_IF_LINK_EXIST_COMMAND = "SELECT COUNT(*) from link where link = ? and status = 1";
+    private final static String CHECK_IF_LINK_EXIST_COMMAND = "SELECT COUNT(*) from link where url = ? and status = 1";
     private final static String CREATE_NEW_LINK_COMMAND =
         "INSERT INTO link (url, updated_at, checked_at, status) VALUES (?,?,?,1)";
     private final static String CHECK_IF_CHAT_HAS_LINK_COMMAND =
