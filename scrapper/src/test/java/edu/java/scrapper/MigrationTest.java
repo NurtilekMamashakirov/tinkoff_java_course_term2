@@ -13,7 +13,7 @@ public class MigrationTest extends IntegrationEnvironment {
     @Test
     @SneakyThrows
     void linkTableCreateTest() {
-        List<String> columns = List.of("id", "link", "updated_at", "checked_at", "status");
+        List<String> columns = List.of("id", "url", "updated_at", "checked_at", "status");
         String sqlQuery =
             "SELECT column_name FROM information_schema.columns WHERE table_name = 'link';";
         Connection connection = POSTGRES.createConnection("");

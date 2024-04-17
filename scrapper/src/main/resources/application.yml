@@ -1,8 +1,16 @@
 app:
+  database-access-type: jdbc
   scheduler:
     enable: true
     interval: 10s
     force-check-delay: 10s
+  stackOverflow:
+    baseUrl: https://api.stackexchange.com/2.3/
+  github:
+    baseUrl: https://api.github.com/
+  bot:
+    baseUrl: http://localhost:8090
+    updatesUri: /updates
 
 spring:
   liquibase:
@@ -10,10 +18,18 @@ spring:
   application:
     name: scrapper
   datasource:
-    url: jdbc:postgresql://localhost:5432/scrapper
+    url: jdbc:postgresql://localhost:5431/scrapper
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    hibernate:
+      ddl-auto: validate
 
 server:
   port: 8080
@@ -25,13 +41,5 @@ springdoc:
   swagger-ui:
     path: /swagger-ui
 
-api:
-  stackOverflow:
-    baseUrl: https://api.stackexchange.com/2.3/
-  github:
-    baseUrl: https://api.github.com/
 
-bot:
-  baseUrl: http://localhost:8090
-  updatesUri: /updates
 

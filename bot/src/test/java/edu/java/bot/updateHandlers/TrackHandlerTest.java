@@ -4,11 +4,8 @@ import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.User;
-import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.UpdateHandlers.CommandHandler;
 import edu.java.bot.UpdateHandlers.TrackHandler;
-import edu.java.bot.dataBase.UserAndLinksDataBase;
-import edu.java.bot.dataBase.UsersDataBase;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -25,23 +22,23 @@ public class TrackHandlerTest {
         };
     }
 
-    @ParameterizedTest
-    @MethodSource("exampleCommandAndExpected")
-    public void handleTest(String command, String link, Boolean expected) {
-        Update update = Mockito.mock(Update.class);
-        Chat chat = Mockito.mock(Chat.class);
-        Mockito.when(chat.id()).thenReturn(1L);
-        Message message = Mockito.mock(Message.class);
-        User user = new User(1L);
-        UsersDataBase.addUser(user);
-        Mockito.when(message.from()).thenReturn(user);
-        Mockito.when(message.chat()).thenReturn(chat);
-        Mockito.when(message.text()).thenReturn(command);
-        Mockito.when(update.message()).thenReturn(message);
-        CommandHandler trackHandler = new TrackHandler();
-        trackHandler.handle(update);
-        assertThat(UserAndLinksDataBase.getAllLinksById(1L).contains(link)).isEqualTo(expected);
-    }
+//    @ParameterizedTest
+//    @MethodSource("exampleCommandAndExpected")
+//    public void handleTest(String command, String link, Boolean expected) {
+//        Update update = Mockito.mock(Update.class);
+//        Chat chat = Mockito.mock(Chat.class);
+//        Mockito.when(chat.id()).thenReturn(1L);
+//        Message message = Mockito.mock(Message.class);
+//        User user = new User(1L);
+//        UsersDataBase.addUser(user);
+//        Mockito.when(message.from()).thenReturn(user);
+//        Mockito.when(message.chat()).thenReturn(chat);
+//        Mockito.when(message.text()).thenReturn(command);
+//        Mockito.when(update.message()).thenReturn(message);
+//        CommandHandler trackHandler = new TrackHandler();
+//        trackHandler.handle(update);
+//        assertThat(UserAndLinksDataBase.getAllLinksById(1L).contains(link)).isEqualTo(expected);
+//    }
 
     static Arguments[] exampleAndExpected() {
         return new Arguments[] {

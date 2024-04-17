@@ -1,6 +1,6 @@
 package edu.java.scheduler;
 
-import edu.java.Services.LinkUpdater;
+import edu.java.services.LinkUpdater;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -14,10 +14,11 @@ import org.springframework.stereotype.Component;
 public class LinkUpdateScheduler {
 
     private LinkUpdater linkUpdater;
+    private final static String UPDATES_INFO = "Было обновлено %s ссылок";
 
     @Scheduled(fixedDelayString = "#{@schedulerInterval}")
     public void update() {
-        linkUpdater.update();
+        log.info(String.format(UPDATES_INFO, linkUpdater.update()));
     }
 
 }
