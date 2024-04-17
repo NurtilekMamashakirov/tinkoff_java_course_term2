@@ -32,13 +32,6 @@ public record ApplicationConfig(
         return databaseAccessType;
     }
 
-    public record Scheduler(boolean enable, @NotNull Duration interval, @NotNull Duration forceCheckDelay) {
-    }
-
-    public enum AccessType {
-        JDBC, JPA, JOOQ
-    }
-
     @Bean
     public DefaultConfigurationCustomizer postgresJooqCustomizer() {
         return (DefaultConfiguration c) -> c.settings()
@@ -47,4 +40,10 @@ public record ApplicationConfig(
             .withRenderQuotedNames(RenderQuotedNames.NEVER);
     }
 
+    public record Scheduler(boolean enable, @NotNull Duration interval, @NotNull Duration forceCheckDelay) {
+    }
+
+    public enum AccessType {
+        JDBC, JPA, JOOQ
+    }
 }
