@@ -3,13 +3,9 @@
  */
 package edu.java.repository.jooq.tables.records;
 
-
 import edu.java.repository.jooq.tables.Chat;
-
 import java.beans.ConstructorProperties;
-
 import javax.annotation.processing.Generated;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jooq.Field;

@@ -3,16 +3,12 @@
  */
 package edu.java.repository.jooq;
 
-
 import edu.java.repository.jooq.tables.Chat;
 import edu.java.repository.jooq.tables.ChatAndLink;
 import edu.java.repository.jooq.tables.Link;
-
 import java.util.Arrays;
 import java.util.List;
-
 import javax.annotation.processing.Generated;
-
 import org.jetbrains.annotations.NotNull;
 import org.jooq.Catalog;
 import org.jooq.Table;

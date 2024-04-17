@@ -3,16 +3,11 @@
  */
 package edu.java.repository.jooq.tables.records;
 
-
 import edu.java.repository.jooq.tables.Link;
-
 import jakarta.validation.constraints.Size;
-
 import java.beans.ConstructorProperties;
 import java.time.OffsetDateTime;
-
 import javax.annotation.processing.Generated;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jooq.Field;
@@ -53,19 +48,19 @@ public class LinkRecord extends UpdatableRecordImpl<LinkRecord> implements Recor
     }
 
     /**
-     * Setter for <code>LINK.LINK</code>.
+     * Setter for <code>LINK.URL</code>.
      */
-    public void setLink(@NotNull String value) {
+    public void setUrl(@NotNull String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>LINK.LINK</code>.
+     * Getter for <code>LINK.URL</code>.
      */
     @jakarta.validation.constraints.NotNull
     @Size(max = 200)
     @NotNull
-    public String getLink() {
+    public String getUrl() {
         return (String) get(1);
     }
 
@@ -150,7 +145,7 @@ public class LinkRecord extends UpdatableRecordImpl<LinkRecord> implements Recor
     @Override
     @NotNull
     public Field<String> field2() {
-        return Link.LINK.LINK_;
+        return Link.LINK.URL;
     }
 
     @Override
@@ -180,7 +175,7 @@ public class LinkRecord extends UpdatableRecordImpl<LinkRecord> implements Recor
     @Override
     @NotNull
     public String component2() {
-        return getLink();
+        return getUrl();
     }
 
     @Override
@@ -210,7 +205,7 @@ public class LinkRecord extends UpdatableRecordImpl<LinkRecord> implements Recor
     @Override
     @NotNull
     public String value2() {
-        return getLink();
+        return getUrl();
     }
 
     @Override
@@ -241,7 +236,7 @@ public class LinkRecord extends UpdatableRecordImpl<LinkRecord> implements Recor
     @Override
     @NotNull
     public LinkRecord value2(@NotNull String value) {
-        setLink(value);
+        setUrl(value);
         return this;
     }
 
@@ -291,12 +286,12 @@ public class LinkRecord extends UpdatableRecordImpl<LinkRecord> implements Recor
     /**
      * Create a detached, initialised LinkRecord
      */
-    @ConstructorProperties({ "id", "link", "updatedAt", "checkedAt", "status" })
-    public LinkRecord(@Nullable Long id, @NotNull String link, @NotNull OffsetDateTime updatedAt, @Nullable OffsetDateTime checkedAt, @Nullable Integer status) {
+    @ConstructorProperties({ "id", "url", "updatedAt", "checkedAt", "status" })
+    public LinkRecord(@Nullable Long id, @NotNull String url, @NotNull OffsetDateTime updatedAt, @Nullable OffsetDateTime checkedAt, @Nullable Integer status) {
         super(Link.LINK);
 
         setId(id);
-        setLink(link);
+        setUrl(url);
         setUpdatedAt(updatedAt);
         setCheckedAt(checkedAt);
         setStatus(status);
@@ -311,7 +306,7 @@ public class LinkRecord extends UpdatableRecordImpl<LinkRecord> implements Recor
 
         if (value != null) {
             setId(value.getId());
-            setLink(value.getLink());
+            setUrl(value.getUrl());
             setUpdatedAt(value.getUpdatedAt());
             setCheckedAt(value.getCheckedAt());
             setStatus(value.getStatus());

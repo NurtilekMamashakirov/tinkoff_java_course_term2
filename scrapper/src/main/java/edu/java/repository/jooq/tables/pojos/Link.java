@@ -3,15 +3,11 @@
  */
 package edu.java.repository.jooq.tables.pojos;
 
-
 import jakarta.validation.constraints.Size;
-
 import java.beans.ConstructorProperties;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
-
 import javax.annotation.processing.Generated;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -32,7 +28,7 @@ public class Link implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id;
-    private String link;
+    private String url;
     private OffsetDateTime updatedAt;
     private OffsetDateTime checkedAt;
     private Integer status;
@@ -41,22 +37,22 @@ public class Link implements Serializable {
 
     public Link(Link value) {
         this.id = value.id;
-        this.link = value.link;
+        this.url = value.url;
         this.updatedAt = value.updatedAt;
         this.checkedAt = value.checkedAt;
         this.status = value.status;
     }
 
-    @ConstructorProperties({ "id", "link", "updatedAt", "checkedAt", "status" })
+    @ConstructorProperties({ "id", "url", "updatedAt", "checkedAt", "status" })
     public Link(
         @Nullable Long id,
-        @NotNull String link,
+        @NotNull String url,
         @NotNull OffsetDateTime updatedAt,
         @Nullable OffsetDateTime checkedAt,
         @Nullable Integer status
     ) {
         this.id = id;
-        this.link = link;
+        this.url = url;
         this.updatedAt = updatedAt;
         this.checkedAt = checkedAt;
         this.status = status;
@@ -78,20 +74,20 @@ public class Link implements Serializable {
     }
 
     /**
-     * Getter for <code>LINK.LINK</code>.
+     * Getter for <code>LINK.URL</code>.
      */
     @jakarta.validation.constraints.NotNull
     @Size(max = 200)
     @NotNull
-    public String getLink() {
-        return this.link;
+    public String getUrl() {
+        return this.url;
     }
 
     /**
-     * Setter for <code>LINK.LINK</code>.
+     * Setter for <code>LINK.URL</code>.
      */
-    public void setLink(@NotNull String link) {
-        this.link = link;
+    public void setUrl(@NotNull String url) {
+        this.url = url;
     }
 
     /**
@@ -155,11 +151,11 @@ public class Link implements Serializable {
         }
         else if (!this.id.equals(other.id))
             return false;
-        if (this.link == null) {
-            if (other.link != null)
+        if (this.url == null) {
+            if (other.url != null)
                 return false;
         }
-        else if (!this.link.equals(other.link))
+        else if (!this.url.equals(other.url))
             return false;
         if (this.updatedAt == null) {
             if (other.updatedAt != null)
@@ -187,7 +183,7 @@ public class Link implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
-        result = prime * result + ((this.link == null) ? 0 : this.link.hashCode());
+        result = prime * result + ((this.url == null) ? 0 : this.url.hashCode());
         result = prime * result + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode());
         result = prime * result + ((this.checkedAt == null) ? 0 : this.checkedAt.hashCode());
         result = prime * result + ((this.status == null) ? 0 : this.status.hashCode());
@@ -199,7 +195,7 @@ public class Link implements Serializable {
         StringBuilder sb = new StringBuilder("Link (");
 
         sb.append(id);
-        sb.append(", ").append(link);
+        sb.append(", ").append(url);
         sb.append(", ").append(updatedAt);
         sb.append(", ").append(checkedAt);
         sb.append(", ").append(status);

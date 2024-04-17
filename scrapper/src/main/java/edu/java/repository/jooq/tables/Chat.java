@@ -3,17 +3,13 @@
  */
 package edu.java.repository.jooq.tables;
 
-
 import edu.java.repository.jooq.DefaultSchema;
 import edu.java.repository.jooq.Keys;
 import edu.java.repository.jooq.tables.records.ChatRecord;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
-
 import javax.annotation.processing.Generated;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jooq.Field;

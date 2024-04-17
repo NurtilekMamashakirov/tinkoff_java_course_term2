@@ -3,11 +3,9 @@
  */
 package edu.java.repository.jooq;
 
-
 import edu.java.repository.jooq.tables.Chat;
 import edu.java.repository.jooq.tables.ChatAndLink;
 import edu.java.repository.jooq.tables.Link;
-
 import javax.annotation.processing.Generated;
 
 

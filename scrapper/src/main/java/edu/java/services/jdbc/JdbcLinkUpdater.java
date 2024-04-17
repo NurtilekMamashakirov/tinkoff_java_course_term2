@@ -37,49 +37,10 @@ public class JdbcLinkUpdater implements LinkUpdater {
         List<Link> links = linksDao.getLastNLinks(NUM_OF_LAST_N_LINKS);
         for (Link link : links) {
             if (gitHubClient.isValidated(link.getUrl())) {
-//                GitHubResponse gitHubResponse = gitHubClient.fetch(link.getUrl().getPath());
-//                if (gitHubResponse.updatedAt().isAfter(link.getUpdatedAt())) {
-//                    linksDao.updateUpdatedTime(link.getUrl().toString(), gitHubResponse.updatedAt());
-//                    List<Chat> chatsOfLink = tgChatDao.getChatsByLink(link.getId());
-//                    List<Integer> chatsIds = chatsOfLink
-//                        .stream()
-//                        .map(chat -> chat.getId().intValue())
-//                        .toList();
-//                    LinkUpdate linkUpdate = new LinkUpdate(
-//                        link.getId().intValue(),
-//                        link.getUrl(),
-//                        DESCRIPTION,
-//                        chatsIds
-//                    );
-//                    botClient.fetch(linkUpdate);
-//                    numOfUpdates++;
-//                }
-//                linksDao.updateCheckedTime(link.getUrl().toString());
                 log.info(link.getUrl().toString());
                 numOfUpdates += handleGithubLink(link);
             }
             if (stackOverflowClient.isValidated(link.getUrl())) {
-//                StackOverflowResponse stackOverflowResponse = stackOverflowClient.fetch(link.getUrl().getPath());
-//                if (stackOverflowResponse.items().get(0).lastActivityDate().isAfter(link.getUpdatedAt())) {
-//                    linksDao.updateUpdatedTime(
-//                        link.getUrl().toString(),
-//                        stackOverflowResponse.items().get(0).lastActivityDate()
-//                    );
-//                    List<Chat> chatsOfLink = tgChatDao.getChatsByLink(link.getId());
-//                    List<Integer> chatsIds = chatsOfLink
-//                        .stream()
-//                        .map(chat -> chat.getId().intValue())
-//                        .toList();
-//                    LinkUpdate linkUpdate = new LinkUpdate(
-//                        link.getId().intValue(),
-//                        link.getUrl(),
-//                        DESCRIPTION,
-//                        chatsIds
-//                    );
-//                    botClient.fetch(linkUpdate);
-//                    numOfUpdates++;
-//                }
-//                linksDao.updateCheckedTime(link.getUrl().toString());
                 numOfUpdates += handleStackOverflowLink(link);
             }
         }

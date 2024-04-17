@@ -3,16 +3,13 @@
  */
 package edu.java.repository.jooq;
 
-
 import edu.java.repository.jooq.tables.Chat;
 import edu.java.repository.jooq.tables.ChatAndLink;
 import edu.java.repository.jooq.tables.Link;
 import edu.java.repository.jooq.tables.records.ChatAndLinkRecord;
 import edu.java.repository.jooq.tables.records.ChatRecord;
 import edu.java.repository.jooq.tables.records.LinkRecord;
-
 import javax.annotation.processing.Generated;
-
 import org.jooq.ForeignKey;
 import org.jooq.TableField;
 import org.jooq.UniqueKey;
@@ -41,7 +38,6 @@ public class Keys {
     public static final UniqueKey<ChatRecord> CONSTRAINT_1 = Internal.createUniqueKey(Chat.CHAT, DSL.name("CONSTRAINT_1"), new TableField[] { Chat.CHAT.ID }, true);
     public static final UniqueKey<ChatRecord> CONSTRAINT_1F = Internal.createUniqueKey(Chat.CHAT, DSL.name("CONSTRAINT_1F"), new TableField[] { Chat.CHAT.ID }, true);
     public static final UniqueKey<LinkRecord> CONSTRAINT_2 = Internal.createUniqueKey(Link.LINK, DSL.name("CONSTRAINT_2"), new TableField[] { Link.LINK.ID }, true);
-    public static final UniqueKey<LinkRecord> CONSTRAINT_23 = Internal.createUniqueKey(Link.LINK, DSL.name("CONSTRAINT_23"), new TableField[] { Link.LINK.LINK_ }, true);
 
     // -------------------------------------------------------------------------
     // FOREIGN KEY definitions

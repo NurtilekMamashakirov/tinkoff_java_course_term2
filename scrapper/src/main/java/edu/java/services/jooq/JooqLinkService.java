@@ -1,30 +1,28 @@
-package edu.java.services.jdbc;
+package edu.java.services.jooq;
 
 import edu.java.dto.models.Link;
-import edu.java.repository.jdbc.JdbcLinkRepository;
+import edu.java.repository.jooq.impls.JooqLinkRepository;
 import edu.java.services.LinkService;
 import java.net.URI;
 import java.util.List;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class JdbcLinkService implements LinkService {
-
-    private JdbcLinkRepository linksDao;
+public class JooqLinkService implements LinkService {
+    private JooqLinkRepository linkRepository;
 
     @Override
     public Link add(long tgChatId, URI url) {
-        return linksDao.addLink(tgChatId, url.toString());
+        return linkRepository.addLink(tgChatId, url.toString());
     }
 
     @Override
     public Link remove(long tgChatId, URI url) {
-        return linksDao.deleteLink(tgChatId, url.toString());
+        return linkRepository.deleteLink(tgChatId, url.toString());
     }
 
     @Override
     public List<Link> listAll(long tgChatId) {
-        return linksDao.getLinks(tgChatId);
+        return linkRepository.getLinks(tgChatId);
     }
-
 }

@@ -20,27 +20,27 @@ public class JdbcLinkRepository implements LinkRepository {
     private final static String GET_ALL_LINKS_IDS_COMMAND = "SELECT id from link where status = 1";
     private final static String GET_LINKS_IDS_COMMAND =
         "SELECT link_id from chat_and_link where status = 1 and chat_id = ?";
-    private final static String GET_LINK_STRING_BY_ID_COMMAND = "SELECT link.link from link WHERE id = ?";
+    private final static String GET_LINK_STRING_BY_ID_COMMAND = "SELECT link.url from link WHERE id = ?";
     private final static String GET_LINK_CHECKED_AT_BY_ID_COMMAND = "SELECT link.checked_at from link WHERE id = ?";
     private final static String GET_LINK_UPDATED_AT_BY_ID_COMMAND = "SELECT link.updated_at from link WHERE id = ?";
-    private final static String GET_LINK_ID_BY_STRING_COMMAND = "SELECT link.id from link where link.link = ?";
+    private final static String GET_LINK_ID_BY_STRING_COMMAND = "SELECT link.id from link where link.url = ?";
     private final static String GET_LINK_UPDATED_AT_BY_STRING_COMMAND =
-        "SELECT link.updated_at from link where link.link = ?";
+        "SELECT link.updated_at from link where link.url = ?";
     private final static String GET_LINK_CHECKED_AT_BY_STRING_COMMAND =
-        "SELECT link.checked_at from link where link.link = ?";
+        "SELECT link.checked_at from link where link.url = ?";
 
     private final static String DELETE_LINK_BY_CHAT_COMMAND =
         "UPDATE chat_and_link SET status = 0 where chat_id = ? and link_id = ?";
     private final static String CHECK_IF_LINK_EXIST_COMMAND = "SELECT COUNT(*) from link where link = ? and status = 1";
     private final static String CREATE_NEW_LINK_COMMAND =
-        "INSERT INTO link (link, updated_at, checked_at, status) VALUES (?,?,?,1)";
+        "INSERT INTO link (url, updated_at, checked_at, status) VALUES (?,?,?,1)";
     private final static String CHECK_IF_CHAT_HAS_LINK_COMMAND =
         "SELECT COUNT(*) from chat_and_link where chat_id = ? and link_id = ? and status = 1";
     private final static String ADD_LINK_TO_CHAT_COMMAND =
         "INSERT INTO chat_and_link (chat_id, link_id, status) VALUES (?,?,1)";
     private final static String GET_ALL_ACTIVE_LINKS_COMMAND = "SELECT from link where status = 1";
-    private final static String UPDATE_CHECKED_TIME_COMMAND = "UPDATE link SET checked_at = ? where link = ?";
-    private final static String UPDATE_UPDATED_TIME_COMMAND = "UPDATE link SET updated_at = ? where link = ?";
+    private final static String UPDATE_CHECKED_TIME_COMMAND = "UPDATE link SET checked_at = ? where url = ?";
+    private final static String UPDATE_UPDATED_TIME_COMMAND = "UPDATE link SET updated_at = ? where url = ?";
 
     @Override
     public List<Link> getLinks(Long id) {

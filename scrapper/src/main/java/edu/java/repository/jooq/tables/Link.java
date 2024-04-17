@@ -3,18 +3,12 @@
  */
 package edu.java.repository.jooq.tables;
 
-
 import edu.java.repository.jooq.DefaultSchema;
 import edu.java.repository.jooq.Keys;
 import edu.java.repository.jooq.tables.records.LinkRecord;
-
 import java.time.OffsetDateTime;
-import java.util.Arrays;
-import java.util.List;
 import java.util.function.Function;
-
 import javax.annotation.processing.Generated;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jooq.Field;
@@ -71,9 +65,9 @@ public class Link extends TableImpl<LinkRecord> {
     public final TableField<LinkRecord, Long> ID = createField(DSL.name("ID"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>LINK.LINK</code>.
+     * The column <code>LINK.URL</code>.
      */
-    public final TableField<LinkRecord, String> LINK_ = createField(DSL.name("LINK"), SQLDataType.VARCHAR(200).nullable(false), this, "");
+    public final TableField<LinkRecord, String> URL = createField(DSL.name("URL"), SQLDataType.VARCHAR(200).nullable(false), this, "");
 
     /**
      * The column <code>LINK.UPDATED_AT</code>.
@@ -139,12 +133,6 @@ public class Link extends TableImpl<LinkRecord> {
     @NotNull
     public UniqueKey<LinkRecord> getPrimaryKey() {
         return Keys.CONSTRAINT_2;
-    }
-
-    @Override
-    @NotNull
-    public List<UniqueKey<LinkRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.CONSTRAINT_23);
     }
 
     @Override

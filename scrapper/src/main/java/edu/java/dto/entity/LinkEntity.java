@@ -23,7 +23,7 @@ public class LinkEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "link")
+    @Column(name = "url")
     @Convert(converter = UriConverter.class)
     private URI url;
     @Column(name = "updated_at")

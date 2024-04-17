@@ -38,5 +38,6 @@ public class TESTik {
 //        System.out.println(matcher2.matches());
 //        System.out.println(matcher2.group(1));
 //        System.out.println(matcher2.group(2));
+        System.out.println(URI.create("Uwu"));
     }
 }
