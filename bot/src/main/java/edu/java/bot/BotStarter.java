@@ -1,7 +1,7 @@
 package edu.java.bot;
 
 import com.pengrad.telegrambot.TelegramBot;
-import edu.java.bot.Listeners.MyUpdatesListener;
+import edu.java.bot.listeners.MyUpdatesListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
