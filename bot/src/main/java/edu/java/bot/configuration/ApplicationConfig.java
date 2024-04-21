@@ -10,6 +10,7 @@ import edu.java.bot.updateHandlers.UnknownHandler;
 import edu.java.bot.updateHandlers.UntrackHandler;
 import edu.java.bot.clients.ScrapperClient;
 import jakarta.validation.constraints.NotEmpty;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -17,10 +18,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.validation.annotation.Validated;
 
 @Validated
-@ConfigurationProperties(prefix = "app", ignoreUnknownFields = false)
+@ConfigurationProperties(prefix = "app")
 public record ApplicationConfig(
     @NotEmpty
-    String telegramToken
+    String telegramToken,
+    @NotEmpty
+    Retry retry
 ) {
 
     @Bean
@@ -43,6 +46,22 @@ public record ApplicationConfig(
     @Bean
     public ScrapperClient scrapperClient() {
         return new ScrapperClient();
+    }
+
+    @Bean
+    public Retry retry() {
+        return retry;
+    }
+
+    public record Retry(
+        RetryType type,
+        Integer maxAttempts,
+        Duration delay
+    ) {
+    }
+
+    public enum RetryType {
+        CONST, LINEAR, EXPONENTIAL
     }
 
 }

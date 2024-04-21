@@ -1,5 +1,10 @@
 app:
   telegram-token: ${TOKEN}
+  retry:
+    delay: 1s
+    max-attempts: 3
+    type: const
+
 
 spring:
   application:
