@@ -19,14 +19,33 @@ spring:
   jackson:
     time-zone: UTC
   datasource:
-    url: jdbc:postgresql://localhost:5432/scrapper
+    url: jdbc:postgresql://localhost:5431/scrapper
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
+  cache:
+    cache-names:
+      - rate-limit-buckets
+    caffeine:
+      spec: maximumSize=100000,expireAfterAccess=60s
 
 server:
   port: 8090
 
 logging:
   config: classpath:log4j2-plain.xml
+
+bucket4j:
+  enabled: true
+  filters:
+    - url: /.*
+    - cache-name: rate-limit-buckets
+      http-response-body: "{ \"status\": 429, \"error\": \"Too Many Requests\", \"message\": \"Too Many Requests\" }"
+      rate-limits:
+        - bandwidths:
+            - capacity: 100
+              refill-speed: interval
+              time: 1
+              unit: minutes
+
 
