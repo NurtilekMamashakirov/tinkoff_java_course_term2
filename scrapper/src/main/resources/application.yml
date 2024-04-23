@@ -11,6 +11,13 @@ app:
   bot:
     baseUrl: http://localhost:8090
     updatesUri: /updates
+  retry:
+    status-codes: 429
+    multiplier: 2.78
+    max-interval: 10
+    max-attempts: 3
+    initial-interval: 10
+    type: const
 
 spring:
   liquibase:

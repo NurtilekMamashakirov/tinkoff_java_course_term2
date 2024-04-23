@@ -4,8 +4,10 @@ import edu.java.clients.bot.BotClient;
 import edu.java.clients.github.GitHubClient;
 import edu.java.clients.stackOverflow.StackOverflowClient;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.retry.support.RetryTemplate;
 
+@Configuration
 public class ClientConfig {
 
     @Bean
