@@ -1,9 +1,16 @@
 app:
   telegram-token: ${TOKEN}
   retry:
-    delay: 1s
-    max-attempts: 3
     type: const
+    initial-interval: 10
+    max-attempts: 3
+    max-interval: 10
+    multiplier: 2.78
+    status-codes: 429, 401, 402
+  scrapper-config:
+    base-url: http://localhost:8080
+    links-uri: /links
+    chat-uri: /tg-chat
 
 
 spring:
@@ -23,7 +30,3 @@ server:
 logging:
   config: classpath:log4j2-plain.xml
 
-scrapper:
-  baseUrl: http://localhost:8080
-  linksUri: /links
-  chatUri: /tg-chat
