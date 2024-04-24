@@ -8,6 +8,7 @@ import edu.java.bot.UpdateHandlers.StartHandler;
 import edu.java.bot.UpdateHandlers.TrackHandler;
 import edu.java.bot.UpdateHandlers.UnknownHandler;
 import edu.java.bot.UpdateHandlers.UntrackHandler;
+import edu.java.bot.clients.ScrapperClient;
 import jakarta.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,12 +32,17 @@ public record ApplicationConfig(
     public List<CommandHandler> handlers() {
         List<CommandHandler> handlers = new ArrayList<>();
         handlers.add(new HelpHandler());
-        handlers.add(new UntrackHandler());
-        handlers.add(new StartHandler());
-        handlers.add(new ListHandler());
-        handlers.add(new TrackHandler());
+        handlers.add(new UntrackHandler(scrapperClient()));
+        handlers.add(new StartHandler(scrapperClient()));
+        handlers.add(new ListHandler(scrapperClient()));
+        handlers.add(new TrackHandler(scrapperClient()));
         handlers.add(new UnknownHandler());
         return handlers;
+    }
+
+    @Bean
+    public ScrapperClient scrapperClient() {
+        return new ScrapperClient();
     }
 
 }

@@ -1,11 +1,16 @@
 package edu.java.bot.UpdateHandlers;
 
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.model.User;
 import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.dataBase.UsersDataBase;
+import edu.java.bot.clients.ScrapperClient;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
+@NoArgsConstructor
 public class StartHandler implements CommandHandler {
+
+    private ScrapperClient scrapperClient;
     private final static String COMMAND = "/start";
     private final static String HELLO_MESSAGE =
         "Добро пожаловать в бот, который позволит отслеживать состояние запроса на сайте GitHub или StackOverFlow.";
@@ -13,14 +18,12 @@ public class StartHandler implements CommandHandler {
 
     @Override
     public SendMessage handle(Update update) {
-        User user = UsersDataBase.getUserById(update.message().from().id());
         Long chatId = update.message().chat().id();
-        if (user != null) {
+        if (scrapperClient.checkIfChatExist(chatId)) {
             return new SendMessage(chatId, ALREADY_AUTHORIZED);
-        } else {
-            UsersDataBase.addUser(update.message().from());
-            return new SendMessage(chatId, HELLO_MESSAGE);
         }
+        scrapperClient.addChat(update.message().from().id());
+        return new SendMessage(chatId, HELLO_MESSAGE);
     }
 
     @Override
