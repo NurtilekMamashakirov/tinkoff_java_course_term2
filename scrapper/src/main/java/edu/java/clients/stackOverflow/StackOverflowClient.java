@@ -3,11 +3,13 @@ package edu.java.clients.stackOverflow;
 import edu.java.clients.stackOverflow.dto.StackOverflowResponse;
 import java.net.URI;
 import java.util.regex.Pattern;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Component
+@Slf4j
 public class StackOverflowClient {
 
     @Value(value = "${app.stackOverflow.baseUrl}")
@@ -31,12 +33,17 @@ public class StackOverflowClient {
     }
 
     public StackOverflowResponse fetch(String uri) {
-        return webClient
-            .get()
-            .uri(uri)
-            .retrieve()
-            .bodyToMono(StackOverflowResponse.class)
-            .block();
+        try {
+            return webClient
+                .get()
+                .uri(uri)
+                .retrieve()
+                .bodyToMono(StackOverflowResponse.class)
+                .block();
+        } catch (Exception ex) {
+            log.info("Произошла ошибка при запросе на StackOverflow: ", ex);
+            return null;
+        }
     }
 
     public boolean isValidated(URI url) {

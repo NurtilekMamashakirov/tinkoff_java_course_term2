@@ -1,14 +1,14 @@
 package edu.java.bot.configuration;
 
 import com.pengrad.telegrambot.TelegramBot;
-import edu.java.bot.UpdateHandlers.CommandHandler;
-import edu.java.bot.UpdateHandlers.HelpHandler;
-import edu.java.bot.UpdateHandlers.ListHandler;
-import edu.java.bot.UpdateHandlers.StartHandler;
-import edu.java.bot.UpdateHandlers.TrackHandler;
-import edu.java.bot.UpdateHandlers.UnknownHandler;
-import edu.java.bot.UpdateHandlers.UntrackHandler;
 import edu.java.bot.clients.ScrapperClient;
+import edu.java.bot.updateHandlers.CommandHandler;
+import edu.java.bot.updateHandlers.HelpHandler;
+import edu.java.bot.updateHandlers.ListHandler;
+import edu.java.bot.updateHandlers.StartHandler;
+import edu.java.bot.updateHandlers.TrackHandler;
+import edu.java.bot.updateHandlers.UnknownHandler;
+import edu.java.bot.updateHandlers.UntrackHandler;
 import jakarta.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +17,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.validation.annotation.Validated;
 
 @Validated
-@ConfigurationProperties(prefix = "app", ignoreUnknownFields = false)
+@ConfigurationProperties(prefix = "app")
 public record ApplicationConfig(
     @NotEmpty
-    String telegramToken
+    String telegramToken,
+    @NotEmpty
+    Kafka kafka
 ) {
 
     @Bean
@@ -43,6 +45,17 @@ public record ApplicationConfig(
     @Bean
     public ScrapperClient scrapperClient() {
         return new ScrapperClient();
+    }
+
+    public record Kafka(
+        String bootstrapServer,
+        String groupId,
+        String autoOffsetReset,
+        Integer maxPollIntervalMs,
+        Boolean enableAutoCommit,
+        Integer concurrency,
+        String topic
+    ) {
     }
 
 }

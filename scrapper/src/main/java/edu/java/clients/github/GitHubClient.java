@@ -21,6 +21,7 @@ public class GitHubClient {
     private WebClient webClient;
     private static final String GITHUB_HOST = "github.com";
     private static final Pattern PATH_PATTERN = Pattern.compile("/(.*)/(.*)");
+    private static final String EX_MESSAGE = "Произошла ошибка при запросе на Github: ";
 
     public GitHubClient() {
         webClient = WebClient
@@ -37,26 +38,36 @@ public class GitHubClient {
     }
 
     public GitHubResponse fetch(String uri) {
-        return webClient
-            .get()
-            .uri(uri)
-            .retrieve()
-            .bodyToMono(GitHubResponse.class)
-            .block();
+        try {
+            return webClient
+                .get()
+                .uri(uri)
+                .retrieve()
+                .bodyToMono(GitHubResponse.class)
+                .block();
+        } catch (Exception ex) {
+            log.info(EX_MESSAGE, ex);
+            return null;
+        }
     }
 
     public List<GitHubEventResponse> fetchEvents(String uri) {
-        GitHubEventResponse[] events = webClient
-            .get()
-            .uri(uri + "/events")
-            .retrieve()
-            .bodyToMono(GitHubEventResponse[].class)
-            .block();
-        if (events == null) {
+        try {
+            GitHubEventResponse[] events = webClient
+                .get()
+                .uri(uri + "/events")
+                .retrieve()
+                .bodyToMono(GitHubEventResponse[].class)
+                .block();
+            if (events == null) {
+                return List.of();
+            }
+            return Arrays.stream(events)
+                .toList();
+        } catch (Exception ex) {
+            log.info(EX_MESSAGE, ex);
             return List.of();
         }
-        return Arrays.stream(events)
-            .toList();
     }
 
     public boolean isValidated(URI uri) {

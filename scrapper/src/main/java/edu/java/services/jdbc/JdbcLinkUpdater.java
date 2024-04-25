@@ -6,12 +6,14 @@ import edu.java.clients.github.dto.GitHubEventResponse;
 import edu.java.clients.github.handler.EventHandler;
 import edu.java.clients.stackOverflow.StackOverflowClient;
 import edu.java.clients.stackOverflow.dto.StackOverflowResponse;
+import edu.java.configuration.ApplicationConfig;
 import edu.java.dto.models.Chat;
 import edu.java.dto.models.Link;
 import edu.java.dto.request.LinkUpdate;
 import edu.java.repository.jdbc.JdbcLinkRepository;
 import edu.java.repository.jdbc.JdbcTgChatRepository;
 import edu.java.services.LinkUpdater;
+import edu.java.services.kafka.QueueProducer;
 import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -29,6 +31,8 @@ public class JdbcLinkUpdater implements LinkUpdater {
     private StackOverflowClient stackOverflowClient;
     private BotClient botClient;
     private List<EventHandler> eventHandlers;
+    private ApplicationConfig applicationConfig;
+    private QueueProducer queueProducer;
     private static final Integer NUM_OF_LAST_N_LINKS = 20;
 
     @Override
@@ -76,7 +80,11 @@ public class JdbcLinkUpdater implements LinkUpdater {
             description.toString(),
             chatsIds
         );
-        botClient.fetch(linkUpdate);
+        if (applicationConfig.useQueue()) {
+            queueProducer.send(linkUpdate);
+        } else {
+            botClient.fetch(linkUpdate);
+        }
         linksDao.updateUpdatedTime(link.getUrl().toString(), events.getLast().updatedAt());
         return 1;
     }
