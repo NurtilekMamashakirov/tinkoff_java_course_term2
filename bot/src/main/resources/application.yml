@@ -1,5 +1,13 @@
 app:
   telegram-token: ${TOKEN}
+  kafka:
+    bootstrap-server: localhost:29091,localhost:29092,localhost:29093
+    group-id: updates-group
+    auto-offset-reset: latest
+    max-poll-interval-ms: 300_000
+    enable-auto-commit: false
+    concurrency: 1
+    topic: link-updates
 
 spring:
   application:

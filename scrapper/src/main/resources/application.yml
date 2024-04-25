@@ -11,6 +11,16 @@ app:
   bot:
     baseUrl: http://localhost:8090
     updatesUri: /updates
+  kafka:
+    Bootstrap-server: localhost:29091,localhost:29092,localhost:29093
+    client-id: bot
+    acks-mode: all
+    delivery-timeout: 60s
+    linger-ms: 12_000
+    batch-size: 100_000
+    max-in-flight-per-connection: 5
+    enable-idempotence: true
+  use-queue: true
 
 spring:
   liquibase:

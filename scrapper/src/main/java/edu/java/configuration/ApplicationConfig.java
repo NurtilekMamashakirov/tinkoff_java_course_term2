@@ -1,5 +1,6 @@
 package edu.java.configuration;
 
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.time.Duration;
 import jdk.jfr.Name;
@@ -19,7 +20,10 @@ public record ApplicationConfig(
     @DefaultValue("jdbc")
     @Name("database-access-type")
     @NotNull
-    AccessType databaseAccessType
+    AccessType databaseAccessType,
+    Kafka kafka,
+    @DefaultValue("true")
+    Boolean useQueue
 ) {
 
     @Bean
@@ -45,5 +49,21 @@ public record ApplicationConfig(
 
     public enum AccessType {
         JDBC, JPA, JOOQ
+    }
+
+    public record Kafka(
+        String bootstrapServer,
+        String clientId,
+        String acksMode,
+        Duration deliveryTimeout,
+        Integer lingerMs,
+        Integer batchSize,
+        Integer maxInFlightPerConnection,
+        Boolean enableIdempotence,
+        String topic,
+        String securityProtocol,
+        String saslMechanism,
+        String saslJaasConfig
+    ) {
     }
 }

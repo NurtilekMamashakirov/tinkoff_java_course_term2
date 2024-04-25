@@ -13,6 +13,7 @@ import edu.java.services.jdbc.JdbcLinkService;
 import edu.java.services.jdbc.JdbcLinkUpdater;
 import edu.java.services.jdbc.JdbcTgChatService;
 import java.util.List;
+import edu.java.services.kafka.QueueProducer;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -39,8 +40,19 @@ public class JdbcAccessConfiguration {
         GitHubClient gitHubClient,
         StackOverflowClient stackOverflowClient,
         BotClient botClient,
-        List<EventHandler> eventHandlers
+        List<EventHandler> eventHandlers,
+        ApplicationConfig applicationConfig,
+        QueueProducer queueProducer
     ) {
-        return new JdbcLinkUpdater(linksDao, chatDao, gitHubClient, stackOverflowClient, botClient, eventHandlers);
+        return new JdbcLinkUpdater(
+            linksDao,
+            chatDao,
+            gitHubClient,
+            stackOverflowClient,
+            botClient,
+            eventHandlers,
+            applicationConfig,
+            queueProducer
+        );
     }
 }

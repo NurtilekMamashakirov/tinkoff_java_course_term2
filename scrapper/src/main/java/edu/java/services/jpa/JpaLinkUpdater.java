@@ -6,6 +6,7 @@ import edu.java.clients.github.dto.GitHubEventResponse;
 import edu.java.clients.github.handler.EventHandler;
 import edu.java.clients.stackOverflow.StackOverflowClient;
 import edu.java.clients.stackOverflow.dto.StackOverflowResponse;
+import edu.java.configuration.ApplicationConfig;
 import edu.java.dto.entity.ChatEntity;
 import edu.java.dto.entity.LinkEntity;
 import edu.java.dto.request.LinkUpdate;
@@ -16,6 +17,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import edu.java.services.kafka.QueueProducer;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -26,6 +28,8 @@ public class JpaLinkUpdater implements LinkUpdater {
     private StackOverflowClient stackOverflowClient;
     private BotClient botClient;
     private List<EventHandler> eventHandlers;
+    private ApplicationConfig applicationConfig;
+    private QueueProducer queueProducer;
     private final static int NUM_OF_LAST_N_LINKS = 20;
 
     @Override
@@ -59,7 +63,11 @@ public class JpaLinkUpdater implements LinkUpdater {
                 "Обновление по данной ссылке",
                 chatsIds
             );
-            botClient.fetch(linkUpdate);
+            if (applicationConfig.useQueue()) {
+                queueProducer.send(linkUpdate);
+            } else {
+                botClient.fetch(linkUpdate);
+            }
             link.setCheckedAt(OffsetDateTime.now());
             linkRepository.save(link);
             return 1;
@@ -99,7 +107,11 @@ public class JpaLinkUpdater implements LinkUpdater {
             description.toString(),
             chatsIds
         );
-        botClient.fetch(linkUpdate);
+        if (applicationConfig.useQueue()) {
+            queueProducer.send(linkUpdate);
+        } else {
+            botClient.fetch(linkUpdate);
+        }
         link.setUpdatedAt(events.getLast().updatedAt());
         linkRepository.save(link);
         return 1;

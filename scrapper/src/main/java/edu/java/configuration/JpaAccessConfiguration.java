@@ -13,6 +13,7 @@ import edu.java.services.jpa.JpaLinkService;
 import edu.java.services.jpa.JpaLinkUpdater;
 import edu.java.services.jpa.JpaTgChatService;
 import java.util.List;
+import edu.java.services.kafka.QueueProducer;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -41,9 +42,19 @@ public class JpaAccessConfiguration {
         GitHubClient gitHubClient,
         StackOverflowClient stackOverflowClient,
         BotClient botClient,
-        List<EventHandler> eventHandlers
+        List<EventHandler> eventHandlers,
+        ApplicationConfig applicationConfig,
+        QueueProducer queueProducer
     ) {
-        return new JpaLinkUpdater(linkRepository, gitHubClient, stackOverflowClient, botClient, eventHandlers);
+        return new JpaLinkUpdater(
+            linkRepository,
+            gitHubClient,
+            stackOverflowClient,
+            botClient,
+            eventHandlers,
+            applicationConfig,
+            queueProducer
+        );
     }
 
 }
