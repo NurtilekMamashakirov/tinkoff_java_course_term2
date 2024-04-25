@@ -13,11 +13,11 @@ import edu.java.dto.request.LinkUpdate;
 import edu.java.repository.jdbc.JdbcLinkRepository;
 import edu.java.repository.jdbc.JdbcTgChatRepository;
 import edu.java.services.LinkUpdater;
+import edu.java.services.kafka.QueueProducer;
 import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import edu.java.services.kafka.QueueProducer;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

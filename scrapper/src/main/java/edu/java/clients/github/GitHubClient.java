@@ -21,6 +21,7 @@ public class GitHubClient {
     private WebClient webClient;
     private static final String GITHUB_HOST = "github.com";
     private static final Pattern PATH_PATTERN = Pattern.compile("/(.*)/(.*)");
+    private static final String EX_MESSAGE = "Произошла ошибка при запросе на Github: ";
 
     public GitHubClient() {
         webClient = WebClient
@@ -45,7 +46,7 @@ public class GitHubClient {
                 .bodyToMono(GitHubResponse.class)
                 .block();
         } catch (Exception ex) {
-            log.info("Произошла ошибка при запросе на Github: ", ex);
+            log.info(EX_MESSAGE, ex);
             return null;
         }
     }
@@ -64,7 +65,7 @@ public class GitHubClient {
             return Arrays.stream(events)
                 .toList();
         } catch (Exception ex) {
-            log.info("Произошла ошибка при запросе на Github: ", ex);
+            log.info(EX_MESSAGE, ex);
             return List.of();
         }
     }

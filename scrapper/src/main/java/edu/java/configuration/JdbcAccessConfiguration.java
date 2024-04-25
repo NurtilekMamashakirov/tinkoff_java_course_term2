@@ -12,13 +12,14 @@ import edu.java.services.TgChatService;
 import edu.java.services.jdbc.JdbcLinkService;
 import edu.java.services.jdbc.JdbcLinkUpdater;
 import edu.java.services.jdbc.JdbcTgChatService;
-import java.util.List;
 import edu.java.services.kafka.QueueProducer;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+@SuppressWarnings("ParameterNumber")
 @Configuration
 @ConditionalOnProperty(prefix = "app", name = "database-access-type", havingValue = "jdbc")
 @AllArgsConstructor

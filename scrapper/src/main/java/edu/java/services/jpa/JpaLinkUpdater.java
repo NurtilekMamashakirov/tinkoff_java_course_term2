@@ -12,12 +12,12 @@ import edu.java.dto.entity.LinkEntity;
 import edu.java.dto.request.LinkUpdate;
 import edu.java.repository.jpa.JpaLinkRepository;
 import edu.java.services.LinkUpdater;
+import edu.java.services.kafka.QueueProducer;
 import java.time.OffsetDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import edu.java.services.kafka.QueueProducer;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
