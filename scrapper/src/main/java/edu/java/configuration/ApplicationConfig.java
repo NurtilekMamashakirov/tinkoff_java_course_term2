@@ -22,7 +22,11 @@ public record ApplicationConfig(
     AccessType databaseAccessType,
     Kafka kafka,
     @DefaultValue("true")
-    Boolean useQueue
+    Boolean useQueue,
+
+    GithubClientConfig github,
+    StackOverflowClientConfig stackOverflow,
+    BotConfig bot
 ) {
 
     @Bean
@@ -63,6 +67,22 @@ public record ApplicationConfig(
         String securityProtocol,
         String saslMechanism,
         String saslJaasConfig
+    ) {
+    }
+
+    public record GithubClientConfig(
+        String baseUrl
+    ) {
+    }
+
+    public record StackOverflowClientConfig(
+        String baseUrl
+    ) {
+    }
+
+    public record BotConfig(
+        String baseUrl,
+        String updatesUri
     ) {
     }
 }

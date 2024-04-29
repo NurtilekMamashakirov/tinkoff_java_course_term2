@@ -20,6 +20,7 @@ app:
     batch-size: 100_000
     max-in-flight-per-connection: 5
     enable-idempotence: true
+    topic: link-updates
   use-queue: true
 
 spring:

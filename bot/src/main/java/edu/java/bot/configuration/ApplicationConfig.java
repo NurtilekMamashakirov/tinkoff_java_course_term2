@@ -22,7 +22,8 @@ public record ApplicationConfig(
     @NotEmpty
     String telegramToken,
     @NotEmpty
-    Kafka kafka
+    Kafka kafka,
+    ScrapperClientConfig scrapper
 ) {
 
     @Bean
@@ -31,20 +32,17 @@ public record ApplicationConfig(
     }
 
     @Bean
-    public List<CommandHandler> handlers() {
+    public List<CommandHandler> handlers(
+        ScrapperClient scrapperClient
+    ) {
         List<CommandHandler> handlers = new ArrayList<>();
         handlers.add(new HelpHandler());
-        handlers.add(new UntrackHandler(scrapperClient()));
-        handlers.add(new StartHandler(scrapperClient()));
-        handlers.add(new ListHandler(scrapperClient()));
-        handlers.add(new TrackHandler(scrapperClient()));
+        handlers.add(new UntrackHandler(scrapperClient));
+        handlers.add(new StartHandler(scrapperClient));
+        handlers.add(new ListHandler(scrapperClient));
+        handlers.add(new TrackHandler(scrapperClient));
         handlers.add(new UnknownHandler());
         return handlers;
-    }
-
-    @Bean
-    public ScrapperClient scrapperClient() {
-        return new ScrapperClient();
     }
 
     public record Kafka(
@@ -55,6 +53,13 @@ public record ApplicationConfig(
         Boolean enableAutoCommit,
         Integer concurrency,
         String topic
+    ) {
+    }
+
+    public record ScrapperClientConfig(
+        String baseUrl,
+        String linksUri,
+        String chatUri
     ) {
     }
 

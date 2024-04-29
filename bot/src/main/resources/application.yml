@@ -8,6 +8,10 @@ app:
     enable-auto-commit: false
     concurrency: 1
     topic: link-updates
+  scrapper:
+    base-url: http://localhost:8080
+    links-uri: /links
+    chat-uri: /tg-chat
 
 spring:
   application:
@@ -25,8 +29,3 @@ server:
 
 logging:
   config: classpath:log4j2-plain.xml
-
-scrapper:
-  baseUrl: http://localhost:8080
-  linksUri: /links
-  chatUri: /tg-chat

@@ -4,31 +4,27 @@ import edu.java.clients.stackOverflow.dto.StackOverflowResponse;
 import java.net.URI;
 import java.util.regex.Pattern;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
-@Component
 @Slf4j
 public class StackOverflowClient {
-
-    @Value(value = "${app.stackOverflow.baseUrl}")
-    private String baseUrl = "https://api.stackexchange.com/2.3/";
+    private String baseUrl;
     private WebClient webClient;
     private final static String STACK_OVERFLOW_HOST = "stackoverflow.com";
     private final static Pattern PATH_PATTERN = Pattern.compile("^/questions/(.*)/(.*)");
 
-    public StackOverflowClient() {
-        webClient = WebClient
-            .builder()
-            .baseUrl(baseUrl)
-            .build();
-    }
-
     public StackOverflowClient(String url) {
+        baseUrl = url;
         webClient = WebClient
             .builder()
             .baseUrl(url)
+            .exchangeStrategies(ExchangeStrategies
+                .builder()
+                .codecs(codecs -> codecs
+                    .defaultCodecs()
+                    .maxInMemorySize(500 * 1024))
+                .build())
             .build();
     }
 

@@ -23,7 +23,7 @@ public class BotClientTest {
         wireMockServer = new WireMockServer(8088);
         wireMockServer.start();
         WireMock.configureFor("localhost", wireMockServer.port());
-        botClient = new BotClient("http://localhost:" + wireMockServer.port());
+        botClient = new BotClient("http://localhost:" + wireMockServer.port(), "/updates");
     }
 
     @AfterEach

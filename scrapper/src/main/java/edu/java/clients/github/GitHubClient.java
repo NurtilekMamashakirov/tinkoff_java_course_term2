@@ -7,33 +7,28 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
-@Component
 @Slf4j
 public class GitHubClient {
-
-    @Value(value = "${app.github.baseUrl}")
-    private String baseUrl = "https://api.github.com/repos";
-
+    private String baseUrl;
     private WebClient webClient;
     private static final String GITHUB_HOST = "github.com";
     private static final Pattern PATH_PATTERN = Pattern.compile("/(.*)/(.*)");
     private static final String EX_MESSAGE = "Произошла ошибка при запросе на Github: ";
 
-    public GitHubClient() {
-        webClient = WebClient
-            .builder()
-            .baseUrl(baseUrl)
-            .build();
-    }
-
     public GitHubClient(String url) {
+        baseUrl = url;
         webClient = WebClient
             .builder()
             .baseUrl(url)
+            .exchangeStrategies(ExchangeStrategies
+                .builder()
+                .codecs(codecs -> codecs
+                    .defaultCodecs()
+                    .maxInMemorySize(500 * 1024))
+                .build())
             .build();
     }
 
@@ -46,7 +41,7 @@ public class GitHubClient {
                 .bodyToMono(GitHubResponse.class)
                 .block();
         } catch (Exception ex) {
-            log.info(EX_MESSAGE, ex);
+            log.error(EX_MESSAGE, ex);
             return null;
         }
     }
@@ -55,7 +50,7 @@ public class GitHubClient {
         try {
             GitHubEventResponse[] events = webClient
                 .get()
-                .uri(uri + "/events")
+                .uri("/repos" + uri + "/events")
                 .retrieve()
                 .bodyToMono(GitHubEventResponse[].class)
                 .block();

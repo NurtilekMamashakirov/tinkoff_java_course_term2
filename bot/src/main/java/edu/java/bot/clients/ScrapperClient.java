@@ -5,29 +5,20 @@ import edu.java.bot.dto.request.RemoveLinkRequest;
 import edu.java.bot.dto.response.LinkResponse;
 import edu.java.bot.dto.response.ListLinksResponse;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.client.WebClient;
 
 public class ScrapperClient {
-
-    @Value("${scrapper.baseUrl}")
-    private String baseUrl = "http://localhost:8080";
+    private String baseUrl;
     private WebClient webClient;
-    @Value("${scrapper.linksUri}")
-    private String linksUri = "/links";
-    @Value("${scrapper.chatUri}")
-    private String chatUri = "/tg-chat";
+    private String linksUri;
+    private String chatUri;
     private static final String HEADER_NAME = "Tg-Chat-Id";
 
-    public ScrapperClient() {
-        webClient = WebClient
-            .builder()
-            .baseUrl(baseUrl)
-            .build();
-    }
-
-    public ScrapperClient(String baseUrl) {
+    public ScrapperClient(String baseUrl, String linksUri, String chatUri) {
+        this.baseUrl = baseUrl;
+        this.linksUri = linksUri;
+        this.chatUri = chatUri;
         webClient = WebClient
             .builder()
             .baseUrl(baseUrl)
