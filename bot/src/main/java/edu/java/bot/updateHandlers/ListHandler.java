@@ -1,4 +1,4 @@
-package edu.java.bot.UpdateHandlers;
+package edu.java.bot.updateHandlers;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
@@ -13,7 +13,7 @@ public class ListHandler implements CommandHandler {
     private ScrapperClient scrapperClient;
     private final static String COMMAND = "/list";
     private final static String UNAUTHORIZED_USER_MESSAGE = "Используйте /start, чтобы авторизоваться";
-    private final static String NO_LINKS_MESSAGE = "У вас не отслеживаемых ссылок. \n"
+    private final static String NO_LINKS_MESSAGE = "У вас нет отслеживаемых ссылок. \n"
         + "Используйте /track, чтобы их добавить.";
 
     @Override

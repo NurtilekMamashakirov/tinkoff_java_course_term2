@@ -11,6 +11,13 @@ app:
   bot:
     baseUrl: http://localhost:8090
     updatesUri: /updates
+  retry:
+    status-codes: 429
+    multiplier: 2.78
+    max-interval: 10
+    max-attempts: 3
+    initial-interval: 10
+    type: const
 
 spring:
   liquibase:
@@ -30,6 +37,10 @@ spring:
         format_sql: true
     hibernate:
       ddl-auto: validate
+  cache:
+    cache-names: rate-limit-buckets
+    caffeine:
+      spec: maximumSize=100000,expireAfterAccess=60s
 
 server:
   port: 8080
@@ -41,5 +52,17 @@ springdoc:
   swagger-ui:
     path: /swagger-ui
 
+bucket4j:
+  enabled: true
+  filters:
+    - url: /.*
+    - cache-name: rate-limit-buckets
+      http-response-body: "{ \"status\": 429, \"error\": \"Too Many Requests\", \"message\": \"Too Many Requests\" }"
+      rate-limits:
+        - bandwidths:
+            - capacity: 100
+              refill-speed: interval
+              time: 1
+              unit: minutes
 
 

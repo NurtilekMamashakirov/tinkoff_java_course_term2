@@ -5,29 +5,34 @@ import edu.java.bot.dto.request.RemoveLinkRequest;
 import edu.java.bot.dto.response.LinkResponse;
 import edu.java.bot.dto.response.ListLinksResponse;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
+import org.springframework.retry.support.RetryTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
 public class ScrapperClient {
 
-    @Value("${scrapper.baseUrl}")
-    private String baseUrl = "http://localhost:8080";
+    private RetryTemplate retryTemplate;
     private WebClient webClient;
-    @Value("${scrapper.linksUri}")
-    private String linksUri = "/links";
-    @Value("${scrapper.chatUri}")
-    private String chatUri = "/tg-chat";
+    private String baseUrl = "http://localhost:8080";
+    private String linksUri;
+    private String chatUri;
     private static final String HEADER_NAME = "Tg-Chat-Id";
 
-    public ScrapperClient() {
+    public ScrapperClient(RetryTemplate retryTemplate, String linksUri, String chatUri) {
+        this.retryTemplate = retryTemplate;
+        this.linksUri = linksUri;
+        this.chatUri = chatUri;
         webClient = WebClient
             .builder()
             .baseUrl(baseUrl)
             .build();
     }
 
-    public ScrapperClient(String baseUrl) {
+    public ScrapperClient(RetryTemplate retryTemplate, String baseUrl, String linksUri, String chatUri) {
+        this.retryTemplate = retryTemplate;
+        this.baseUrl = baseUrl;
+        this.linksUri = linksUri;
+        this.chatUri = chatUri;
         webClient = WebClient
             .builder()
             .baseUrl(baseUrl)
@@ -36,64 +41,64 @@ public class ScrapperClient {
 
     public LinkResponse addLink(Long id, String link) {
         AddLinkRequest addLinkRequest = new AddLinkRequest(link);
-        return webClient
+        return retryTemplate.execute(context -> webClient
             .post()
             .uri(linksUri)
             .bodyValue(addLinkRequest)
             .header(HEADER_NAME, id.toString())
             .retrieve()
             .bodyToMono(LinkResponse.class)
-            .block();
+            .block());
     }
 
     public LinkResponse removeLink(Long id, String link) {
         RemoveLinkRequest request = new RemoveLinkRequest(link);
-        return webClient
+        return retryTemplate.execute(context -> webClient
             .method(HttpMethod.DELETE)
             .uri(linksUri)
             .bodyValue(request)
             .header(HEADER_NAME, id.toString())
             .retrieve()
             .bodyToMono(LinkResponse.class)
-            .block();
+            .block());
     }
 
     public ListLinksResponse getLinks(Long id) {
-        return webClient
+        return retryTemplate.execute(context -> webClient
             .get()
             .uri(linksUri)
             .header(HEADER_NAME, id.toString())
             .retrieve()
             .bodyToMono(ListLinksResponse.class)
-            .block();
+            .block());
     }
 
     public void addChat(Long id) {
         String uri = chatUri + "/" + id.toString();
-        webClient.post()
+        retryTemplate.execute(context -> webClient.post()
             .uri(uri)
             .retrieve()
             .bodyToMono(Void.class)
-            .block();
+            .block());
     }
 
     public void deleteChat(Long id) {
         String uri = chatUri + "/" + id.toString();
-        webClient.delete()
+        retryTemplate.execute(context -> webClient.delete()
             .uri(uri)
             .retrieve()
             .bodyToMono(Void.class)
-            .block();
+            .block());
     }
 
     public boolean checkIfChatExist(Long id) {
         String uri = chatUri + "/" + id.toString();
-        return Boolean.TRUE.equals(webClient
+        return Boolean.TRUE.equals(retryTemplate.execute(context -> webClient
             .get()
             .uri(uri)
             .retrieve()
             .bodyToMono(Boolean.class)
-            .block());
+            .block()));
     }
 
     public boolean checkIfLinkExist(Long id, String link) {

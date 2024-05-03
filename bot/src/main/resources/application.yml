@@ -1,5 +1,17 @@
 app:
   telegram-token: ${TOKEN}
+  retry:
+    type: const
+    initial-interval: 10
+    max-attempts: 3
+    max-interval: 10
+    multiplier: 2.78
+    status-codes: 429, 401, 402
+  scrapper-config:
+    base-url: http://localhost:8080
+    links-uri: /links
+    chat-uri: /tg-chat
+
 
 spring:
   application:
@@ -7,10 +19,15 @@ spring:
   jackson:
     time-zone: UTC
   datasource:
-    url: jdbc:postgresql://localhost:5432/scrapper
+    url: jdbc:postgresql://localhost:5431/scrapper
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
+  cache:
+    cache-names:
+      - rate-limit-buckets
+    caffeine:
+      spec: maximumSize=100000,expireAfterAccess=60s
 
 server:
   port: 8090
@@ -18,7 +35,17 @@ server:
 logging:
   config: classpath:log4j2-plain.xml
 
-scrapper:
-  baseUrl: http://localhost:8080
-  linksUri: /links
-  chatUri: /tg-chat
+bucket4j:
+  enabled: true
+  filters:
+    - url: /.*
+    - cache-name: rate-limit-buckets
+      http-response-body: "{ \"status\": 429, \"error\": \"Too Many Requests\", \"message\": \"Too Many Requests\" }"
+      rate-limits:
+        - bandwidths:
+            - capacity: 100
+              refill-speed: interval
+              time: 1
+              unit: minutes
+
+
