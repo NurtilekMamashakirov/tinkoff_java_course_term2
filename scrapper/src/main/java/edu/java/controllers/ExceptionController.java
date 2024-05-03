@@ -36,5 +36,6 @@ public class ExceptionController {
             exception.getMessage(),
             Arrays.stream(exception.getStackTrace()).map(StackTraceElement::toString).toList()
         );
+
     }
 }

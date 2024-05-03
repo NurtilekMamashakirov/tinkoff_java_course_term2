@@ -13,7 +13,7 @@ jobs:
     name: Build
     permissions:
       packages: write
-      pull-requests: write 
+      pull-requests: write
 
     steps:
       - uses: actions/checkout@v4
@@ -26,6 +26,9 @@ jobs:
       - name: maven build
         run: mvn -pl bot -am package
 
+      - name: dockerfile create image
+        run: docker build ${{ github.workspace }}/bot
+
       - id: jacoco
         uses: madrapps/jacoco-report@v1.6.1
         if: ( github.event_name != 'workflow_dispatch' )
@@ -36,6 +39,28 @@ jobs:
           min-coverage-changed-files: 30
           title: Code Coverage
           update-comment: true
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: ghcr.io/NurtilekMamashakirov/bot
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        with:
+          context: bot/
+          file: bot/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
 
   checkstyle:
     name: checkstyle
